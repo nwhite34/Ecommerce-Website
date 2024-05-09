@@ -1,19 +1,26 @@
-
+// BasePage.js
 import React from 'react';
-import HomePage from './HomePage'; // Import the HomePage component or any other page component
-import Navbar from '../Navbar'; // Import the HomePage component or any other page component
-
+import HomePage from './HomePage';
+import PromoBar from '../PromoBar';
+import NavBar from '../NavBar';
 
 function BasePage() {
   return (
-   
-    <div className='h-full'> 
-    <Navbar/>
-      <main className="max-w-5xl mx-auto">
-        <HomePage /> {/* Swap with other page components as needed */}
-      </main>
-
+    <> 
+      {/* Move PromoBar to be above NavBar */}
+      <div className="absolute top-0 w-full z-50">
+        <PromoBar />
       </div>
+     
+        <NavBar />
+
+        <div className="min-h-[120vh] relative">
+    
+      
+        <HomePage />
+     
+    </div>
+    </>
   );
 }
 
