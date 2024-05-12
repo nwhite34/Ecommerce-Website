@@ -2,7 +2,7 @@
 import React from 'react';
 import HomePage from './HomePage';
 import PromoBar from '../PromoBar';
-import NavBar from '../NavBar';
+import NavBar from '../Navbar';
 
 function BasePage() {
   return (
