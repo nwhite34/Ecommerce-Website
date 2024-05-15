@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaTimes } from 'react-icons/fa';
+import NicksLogo from '../images/collection.png'; // Make sure the path is correct based on your file structure
 
 function NavBar() {
   const [isVisible, setIsVisible] = useState(true);
@@ -37,7 +38,7 @@ function NavBar() {
     >
       <div className="flex justify-between items-center w-full px-8 py-2">
         <div className="flex items-center">
-          <img src="/path/to/logo.png" alt="Logo" className="h-6 w-auto" />
+        <img src={NicksLogo} alt="Logo" className="h-10 w-auto" />
         </div>
         
         <div className="flex items-center justify-end w-full">
