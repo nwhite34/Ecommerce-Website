@@ -20,10 +20,7 @@ function HomePageSectionSix() {
           <div className="absolute bottom-4 left-4 text-white text-lg">Shop Swim</div>
         </div>
       </div>
-      <div className="text-center mt-4 w-full bg-pink-500 p-4 ">
-        <h2 className="text-white text-3xl font-bold">2 for DEALS</h2>
-        <button className="mt-2 px-4 py-2 bg-white text-pink-500 font-bold">SHOP NOW</button>
-      </div>
+      
     </div>
   );
 }

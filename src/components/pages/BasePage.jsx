@@ -7,6 +7,8 @@ import HomePageSectionThree from './HomePageSectionThree';
 import HomePageSectionFour from './HomePageSectionFour';
 import HomePageSectionFive from './HomePageSectionFive';
 import HomePageSectionSix from './HomePageSectionSix';
+import HomePageSectionSeven from './HomePageSectionSeven';
+import HomePageSectionEight from './HomePageSectionEight';
 
 
 import PromoBar from '../PromoBar';
@@ -27,9 +29,11 @@ function BasePage() {
     
         <HomePage />
         <HomePageSectionOne/>
+        <HomePageSectionSeven/>
         <HomePageSectionTwo/>
         <HomePageSectionThree/>
         <HomePageSectionSix/>
+        <HomePageSectionEight/>
         <HomePageSectionFive/>
         <HomePageSectionFour/>
        
