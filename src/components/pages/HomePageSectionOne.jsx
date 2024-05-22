@@ -1,6 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function HomePageSectionOne() {
+  const navigate = useNavigate();
+
+  const handleShopWomens = () => {
+    navigate('/womens-section');
+  };
+
+  const handleShopMens = () => {
+    navigate('/mens-section');
+  };
+
   return (
     <div className="bg-yellow-400 flex flex-col items-center justify-center min-h-[50vh] text-black text-center px-4">
       {/* Header text */}
@@ -12,11 +23,17 @@ function HomePageSectionOne() {
       </p>
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-        <button className="bg-black text-white py-3 px-6 rounded-full uppercase tracking-wider hover:bg-gray-800 transition-colors">
+        <button
+          onClick={handleShopWomens}
+          className="bg-black text-white py-3 px-6 rounded-full uppercase tracking-wider hover:bg-gray-800 transition-colors"
+        >
           Shop Womens
         </button>
-        <button className="bg-black text-white py-3 px-6 rounded-full uppercase tracking-wider hover:bg-gray-800 transition-colors">
-          Shop Girls
+        <button
+          onClick={handleShopMens}
+          className="bg-black text-white py-3 px-6 rounded-full uppercase tracking-wider hover:bg-gray-800 transition-colors"
+        >
+          Shop Mens
         </button>
       </div>
     </div>

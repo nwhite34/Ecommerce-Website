@@ -1,4 +1,3 @@
-// BasePage.js
 import React from 'react';
 import HomePage from './HomePage';
 import HomePageSectionOne from './HomePageSectionOne';
@@ -8,38 +7,29 @@ import HomePageSectionFour from './HomePageSectionFour';
 import HomePageSectionFive from './HomePageSectionFive';
 import HomePageSectionSix from './HomePageSectionSix';
 import HomePageSectionSeven from './HomePageSectionSeven';
-import HomePageSectionEight from './HomePageSectionEight';
-
-
 import PromoBar from '../PromoBar';
 import NavBar from '../Navbar';
 import Footer from '../Footer';
 
 function BasePage() {
   return (
-    <> 
-      {/* Move PromoBar to be above NavBar */}
+    <>
       <div className="absolute top-0 w-full z-50">
         <PromoBar />
       </div>
-     
-        <NavBar />
-
-        <div className="min-h-[120vh] relative">
-    
+      <NavBar />
+      <div className="min-h-[120vh] relative">
         <HomePage />
-        <HomePageSectionOne/>
-        <HomePageSectionSeven/>
-        <HomePageSectionTwo/>
-        <HomePageSectionThree/>
-        <HomePageSectionSix/>
-        <HomePageSectionEight/>
-        <HomePageSectionFive/>
-        <HomePageSectionFour/>
-       
-  
-        <Footer/>
-    </div>
+        <HomePageSectionOne />
+        <HomePageSectionSeven />
+        <HomePageSectionTwo />
+        <HomePageSectionThree />
+        <HomePageSectionSix />
+        <HomePageSectionSeven />
+        <HomePageSectionFive />
+        <HomePageSectionFour />
+        <Footer />
+      </div>
     </>
   );
 }
