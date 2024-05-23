@@ -1,5 +1,7 @@
-// src/context/WishlistContext.js
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { db, auth } from '../config/firebase';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const WishlistContext = createContext();
 
@@ -7,24 +9,54 @@ export const useWishlist = () => useContext(WishlistContext);
 
 export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);
+  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const storedWishlist = localStorage.getItem('wishlist');
-    if (storedWishlist) {
-      setWishlist(JSON.parse(storedWishlist));
+  const saveWishlistToFirestore = useCallback(async (newWishlist) => {
+    if (user) {
+      try {
+        await setDoc(doc(db, 'users', user.uid, 'wishlist', 'wishlistData'), { wishlist: newWishlist });
+      } catch (error) {
+        console.error('Error saving wishlist to Firestore:', error);
+      }
     }
-  }, []);
+  }, [user]);
+
+  const loadWishlistFromFirestore = useCallback(async () => {
+    if (user) {
+      try {
+        const docRef = doc(db, 'users', user.uid, 'wishlist', 'wishlistData');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setWishlist(docSnap.data().wishlist);
+        }
+      } catch (error) {
+        console.error('Error loading wishlist from Firestore:', error);
+      }
+    }
+  }, [user]);
 
   useEffect(() => {
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
-  }, [wishlist]);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log('Auth State Changed:', currentUser); // Log the authentication state
+      setUser(currentUser);
+      if (currentUser) {
+        loadWishlistFromFirestore();
+      }
+    });
+
+    return () => unsubscribe();
+  }, [loadWishlistFromFirestore]);
 
   const addToWishlist = (item) => {
-    setWishlist((prevWishlist) => [...prevWishlist, item]);
+    const newWishlist = [...wishlist, item];
+    setWishlist(newWishlist);
+    saveWishlistToFirestore(newWishlist);
   };
 
   const removeFromWishlist = (title) => {
-    setWishlist((prevWishlist) => prevWishlist.filter((item) => item.title !== title));
+    const newWishlist = wishlist.filter((item) => item.title !== title);
+    setWishlist(newWishlist);
+    saveWishlistToFirestore(newWishlist);
   };
 
   return (

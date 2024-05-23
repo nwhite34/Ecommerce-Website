@@ -1,13 +1,15 @@
+// src/components/NavBar.jsx
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaTimes, FaUserCircle, FaShoppingCart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import NicksLogo from '../images/collection.png';
 import LoginModal from './LoginModal';
 import CartDropdown from './CartDropdown';
-import SideCart from './SideCart'; // Import SideCart
+import SideCart from './SideCart';
 import { useCart } from '../context/CartContext';
 import { auth } from '../config/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import searchProducts from '../services/searchProducts';
 
 function NavBar() {
   const [isVisible, setIsVisible] = useState(true);
@@ -19,6 +21,7 @@ function NavBar() {
   const [user, setUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showCartDropdown, setShowCartDropdown] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
 
   const { cart, toggleCart, isCartOpen } = useCart();
   const navigate = useNavigate();
@@ -50,12 +53,33 @@ function NavBar() {
     return () => unsubscribe();
   }, []);
 
-  const handleSearchChange = (e) => setSearchValue(e.target.value);
+  const handleSearchChange = async (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
+
+    if (value) {
+      const results = await searchProducts(value);
+      setSearchResults(results);
+    } else {
+      setSearchResults([]);
+    }
+  };
+
   const clearSearch = () => {
     setSearchValue('');
+    setSearchResults([]);
     setShowSearchBar(false);
   };
-  const toggleSearchBar = () => setShowSearchBar(!showSearchBar);
+
+  const performSearch = async () => {
+    if (showSearchBar && searchValue) {
+      const results = await searchProducts(searchValue);
+      setSearchResults(results);
+    } else {
+      setShowSearchBar(!showSearchBar);
+    }
+  };
+
   const toggleLoginModal = () => setShowLoginModal(!showLoginModal);
   const switchToSignUp = () => setIsSignUp(true);
   const switchToSignIn = () => setIsSignUp(false);
@@ -79,6 +103,11 @@ function NavBar() {
   const handleLogoClick = () => {
     navigate('/');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleResultClick = (id) => {
+    navigate(`/product/${id}`);
+    clearSearch();
   };
 
   useEffect(() => {
@@ -106,7 +135,9 @@ function NavBar() {
 
           <div className="flex items-center justify-end w-full">
             <div className="hidden sm:flex relative mx-auto w-full max-w-md">
+              <label htmlFor="search" className="sr-only">Search</label>
               <input
+                id="search"
                 type="text"
                 value={searchValue}
                 onChange={handleSearchChange}
@@ -118,11 +149,11 @@ function NavBar() {
                 className={`cursor-pointer text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2 ${showSearchBar ? 'block' : 'hidden'}`}
               />
               <FaSearch
-                onClick={toggleSearchBar}
+                onClick={performSearch}
                 className="hidden sm:block cursor-pointer text-gray-600 absolute right-14 top-1/2 transform -translate-y-1/2"
               />
             </div>
-            <FaSearch onClick={toggleSearchBar} className="text-gray-600 sm:hidden cursor-pointer mr-4" />
+            <FaSearch onClick={performSearch} className="text-gray-600 sm:hidden cursor-pointer mr-4" />
 
             {user ? (
               <div className="relative">
@@ -157,7 +188,9 @@ function NavBar() {
         </div>
         {showSearchBar && (
           <div className="relative w-full px-8 py-4 sm:hidden">
+            <label htmlFor="mobile-search" className="sr-only">Search</label>
             <input
+              id="mobile-search"
               type="text"
               value={searchValue}
               onChange={handleSearchChange}
@@ -171,6 +204,19 @@ function NavBar() {
           </div>
         )}
       </nav>
+
+      {searchResults.length > 0 && (
+        <div className="absolute top-16 sm:top-20 w-full max-w-md mx-auto bg-white shadow-md rounded-md z-20">
+          <ul>
+            {searchResults.map((result) => (
+              <li key={result.id} className="p-4 border-b last:border-b-0 flex items-center cursor-pointer" onClick={() => handleResultClick(result.id)}>
+                <img src={result.image} alt={result.title} className="w-10 h-10 inline-block mr-4"/>
+                <span>{result.title}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <LoginModal
         isOpen={showLoginModal}
