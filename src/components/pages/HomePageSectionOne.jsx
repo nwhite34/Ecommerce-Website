@@ -13,7 +13,7 @@ function HomePageSectionOne() {
   };
 
   return (
-    <div className="bg-yellow-400 flex flex-col items-center justify-center min-h-[50vh] text-black text-center px-4">
+    <div className="bg-yellow-400 flex flex-col items-center justify-center min-h-[50vh] sm:min-h-[75vh] md:min-h-[50vh] text-black text-center px-4 py-8 sm:py-16">
       {/* Header text */}
       <h1 className="text-6xl font-bold mb-6 sm:text-5xl md:text-6xl">
         ONE DAY SALE

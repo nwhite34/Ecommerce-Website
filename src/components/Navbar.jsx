@@ -1,4 +1,3 @@
-// src/components/NavBar.jsx
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaTimes, FaUserCircle, FaShoppingCart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -105,8 +104,12 @@ function NavBar() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleResultClick = (id) => {
-    navigate(`/product/${id}`);
+  const handleResultClick = (category, title) => {
+    if (category === 'men') {
+      navigate('/mens-section');
+    } else if (category === 'women') {
+      navigate('/womens-section');
+    }
     clearSearch();
   };
 
@@ -152,6 +155,18 @@ function NavBar() {
                 onClick={performSearch}
                 className="hidden sm:block cursor-pointer text-gray-600 absolute right-14 top-1/2 transform -translate-y-1/2"
               />
+              {searchResults.length > 0 && (
+                <div className="absolute top-full mt-2 w-full bg-white shadow-lg rounded-md z-20">
+                  <ul>
+                    {searchResults.map((result) => (
+                      <li key={result.id} className="p-4 border-b last:border-b-0 flex items-center cursor-pointer" onClick={() => handleResultClick(result.category, result.title)}>
+                        <img src={result.image} alt={result.title} className="w-10 h-10 inline-block mr-4"/>
+                        <span>{result.title}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
             <FaSearch onClick={performSearch} className="text-gray-600 sm:hidden cursor-pointer mr-4" />
 
@@ -201,22 +216,21 @@ function NavBar() {
               onClick={clearSearch}
               className="cursor-pointer text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2"
             />
+            {searchResults.length > 0 && (
+              <div className="absolute top-full mt-2 w-full max-w-xs mx-auto bg-white shadow-lg rounded-md z-20">
+                <ul>
+                  {searchResults.map((result) => (
+                    <li key={result.id} className="p-4 border-b last:border-b-0 flex items-center cursor-pointer" onClick={() => handleResultClick(result.category, result.title)}>
+                      <img src={result.image} alt={result.title} className="w-10 h-10 inline-block mr-4"/>
+                      <span>{result.title}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
       </nav>
-
-      {searchResults.length > 0 && (
-        <div className="absolute top-16 sm:top-20 w-full max-w-md mx-auto bg-white shadow-md rounded-md z-20">
-          <ul>
-            {searchResults.map((result) => (
-              <li key={result.id} className="p-4 border-b last:border-b-0 flex items-center cursor-pointer" onClick={() => handleResultClick(result.id)}>
-                <img src={result.image} alt={result.title} className="w-10 h-10 inline-block mr-4"/>
-                <span>{result.title}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
 
       <LoginModal
         isOpen={showLoginModal}

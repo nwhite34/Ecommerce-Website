@@ -1,65 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from '../Navbar';
 import PromoBar from '../PromoBar';
 import Footer from '../Footer';
 import Card from './Card';
 import { useWishlist } from '../../context/WishlistContext';
 import { useCart } from '../../context/CartContext';
-
-const items = [
-  {
-    image: 'https://source.unsplash.com/featured/?men,formal-shirt',
-    title: 'Formal Shirt',
-    price: 'A$59.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?men,casual-shirt',
-    title: 'Casual Shirt',
-    price: 'A$69.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?men,denim-shirt',
-    title: 'Denim Shirt',
-    price: 'A$49.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?men,linen-shirt',
-    title: 'Linen Shirt',
-    price: 'A$79.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?men,chinos',
-    title: 'Chinos',
-    price: 'A$59.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?men,jeans',
-    title: 'Jeans',
-    price: 'A$69.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?men,joggers',
-    title: 'Joggers',
-    price: 'A$49.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?men,dress-pants',
-    title: 'Dress Pants',
-    price: 'A$79.99',
-    sizes: ['S', 'M', 'L'],
-  },
-];
+import { db } from '../../config/firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 function MensSection() {
+  const [items, setItems] = useState([]);
   const { addToWishlist } = useWishlist();
   const { addToCart, toggleCart } = useCart();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const productsRef = collection(db, 'products');
+      const q = query(productsRef, where('category', '==', 'men'));
+      const querySnapshot = await getDocs(q);
+      const products = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setItems(products);
+    };
+
+    fetchProducts();
+  }, []);
 
   const handleAddToCart = (item) => {
     addToCart(item);

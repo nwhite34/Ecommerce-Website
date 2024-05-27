@@ -1,65 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from '../Navbar';
 import PromoBar from '../PromoBar';
 import Footer from '../Footer';
 import Card from './Card';
 import { useWishlist } from '../../context/WishlistContext';
 import { useCart } from '../../context/CartContext';
-
-const items = [
-  {
-    image: 'https://source.unsplash.com/featured/?women,formal-dress',
-    title: 'Formal Dress',
-    price: 'A$79.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?women,casual-dress',
-    title: 'Casual Dress',
-    price: 'A$69.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?women,denim-jacket',
-    title: 'Denim Jacket',
-    price: 'A$89.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?women,linen-top',
-    title: 'Linen Top',
-    price: 'A$49.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?women,skirt',
-    title: 'Skirt',
-    price: 'A$39.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?women,jeans',
-    title: 'Jeans',
-    price: 'A$69.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?women,joggers',
-    title: 'Joggers',
-    price: 'A$49.99',
-    sizes: ['S', 'M', 'L'],
-  },
-  {
-    image: 'https://source.unsplash.com/featured/?women,pants',
-    title: 'Pants',
-    price: 'A$59.99',
-    sizes: ['S', 'M', 'L'],
-  },
-];
+import { db } from '../../config/firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 function WomenSection() {
+  const [items, setItems] = useState([]);
   const { addToWishlist } = useWishlist();
   const { addToCart, toggleCart } = useCart();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const productsRef = collection(db, 'products');
+      const q = query(productsRef, where('category', '==', 'women'));
+      const querySnapshot = await getDocs(q);
+      const products = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setItems(products);
+    };
+
+    fetchProducts();
+  }, []);
 
   const handleAddToCart = (item) => {
     addToCart(item);

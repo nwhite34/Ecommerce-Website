@@ -1,22 +1,25 @@
-// src/services/searchProducts.js
-import { db } from '../config/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
 
-const searchProducts = async (searchTerm) => {
-  const productsRef = collection(db, 'products');
-  const q = query(
-    productsRef,
-    where('title', '>=', searchTerm),
-    where('title', '<=', searchTerm + '\uf8ff')
-  );
-  
-  const querySnapshot = await getDocs(q);
-  const products = [];
-  querySnapshot.forEach((doc) => {
-    products.push({ id: doc.id, ...doc.data() });
-  });
-  
-  return products;
+const db = getFirestore();
+
+const searchProducts = async (searchValue) => {
+  try {
+    const productsRef = collection(db, 'products');
+    const snapshot = await getDocs(productsRef);
+
+    const allProducts = snapshot.docs.map(doc => doc.data());
+    console.log('All products:', allProducts); // Debug log
+
+    const filteredProducts = allProducts.filter(product => {
+      // Ensure product has a title before attempting to call toLowerCase
+      return product.title && product.title.toLowerCase().includes(searchValue.toLowerCase());
+    });
+
+    return filteredProducts;
+  } catch (error) {
+    console.error('Error fetching search results:', error);
+    return [];
+  }
 };
 
 export default searchProducts;
