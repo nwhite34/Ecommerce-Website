@@ -1,6 +1,15 @@
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
-const serviceAccount = require('./ecom-1001a-firebase-adminsdk-s4rml-fd87033957.json');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const serviceAccount = {
+  type: "service_account",
+  project_id: process.env.FIREBASE_PROJECT_ID,
+  private_key: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  client_email: process.env.FIREBASE_CLIENT_EMAIL,
+};
 
 initializeApp({
   credential: cert(serviceAccount)
@@ -125,15 +134,40 @@ const products = [
 
 const addProductsToFirestore = async () => {
   const productsRef = db.collection('products');
+
+  // Clear existing products
   await productsRef.get().then(snapshot => {
     snapshot.forEach(doc => {
       doc.ref.delete();
     });
   });
+
+  // Add new products
   for (let product of products) {
     await productsRef.add(product);
   }
   console.log('Products added successfully');
 };
 
-addProductsToFirestore().catch(err => console.error('Error adding products:', err));
+const removeDuplicates = async () => {
+  const productsRef = db.collection('products');
+  const snapshot = await productsRef.get();
+  const titles = new Set();
+
+  snapshot.forEach(doc => {
+    const product = doc.data();
+    if (titles.has(product.title)) {
+      doc.ref.delete().then(() => {
+        console.log(`Document ${doc.id} deleted`);
+      }).catch((error) => {
+        console.error(`Error deleting document ${doc.id}: `, error);
+      });
+    } else {
+      titles.add(product.title);
+    }
+  });
+};
+
+addProductsToFirestore()
+  .then(removeDuplicates)
+  .catch(err => console.error('Error updating products:', err));
