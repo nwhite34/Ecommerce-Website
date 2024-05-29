@@ -1,4 +1,3 @@
-// src/components/InitializeProducts.js
 import { useEffect } from 'react';
 import addProductsToFirestore from '../services/addProducts';
 import { db, auth } from '../config/firebase';
@@ -10,49 +9,49 @@ const InitializeProducts = () => {
     const checkAndAddProducts = async (user) => {
       const products = [
         {
-          image: 'https://source.unsplash.com/featured/?men,formal-shirt',
+          image: '/images/formalshirt.jpg',
           title: 'Formal Shirt',
           price: 'A$59.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?men,casual-shirt',
+          image: '/images/casualshirt.jpg',
           title: 'Casual Shirt',
           price: 'A$69.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?men,denim-shirt',
+          image: '/images/denimshirt.jpg',
           title: 'Denim Shirt',
           price: 'A$49.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?men,linen-shirt',
+          image: '/images/linenshirt.jpg',
           title: 'Linen Shirt',
           price: 'A$79.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?men,chinos',
+          image: '/images/chinos.jpg',
           title: 'Chinos',
           price: 'A$59.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?men,jeans',
+          image: '/images/Jeansmen.jpg',
           title: 'Jeans',
           price: 'A$69.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?men,joggers',
+          image: '/images/Joggersmen.jpg',
           title: 'Joggers',
           price: 'A$49.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?men,dress-pants',
+          image: '/images/dresspants.jpg',
           title: 'Dress Pants',
           price: 'A$79.99',
           sizes: ['S', 'M', 'L'],

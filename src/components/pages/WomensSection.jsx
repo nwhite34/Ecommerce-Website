@@ -11,7 +11,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 function WomenSection() {
   const [items, setItems] = useState([]);
   const { addToWishlist } = useWishlist();
-  const { addToCart, toggleCart } = useCart();
+  const { addToCart } = useCart(); // Removed toggleCart
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -30,7 +30,7 @@ function WomenSection() {
 
   const handleAddToCart = (item) => {
     addToCart(item);
-    toggleCart();
+    // Removed toggleCart
   };
 
   return (

@@ -14,49 +14,49 @@ const InitializeWomenProducts = () => {
 
       const products = [
         {
-          image: 'https://source.unsplash.com/featured/?women,formal-dress',
+          image: '/images/formadress.jpg',
           title: 'Formal Dress',
           price: 'A$79.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?women,casual-dress',
+          image: '/images/casualdress.jpg',
           title: 'Casual Dress',
           price: 'A$69.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?women,denim-jacket',
+          image: '/images/decomjacket.jpg',
           title: 'Denim Jacket',
           price: 'A$89.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?women,linen-top',
+          image: '/images/linentop.jpg',
           title: 'Linen Top',
           price: 'A$49.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?women,skirt',
+          image: '/images/skirt.jpeg',
           title: 'Skirt',
           price: 'A$39.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?women,jeans',
+          image: '/images/jeanswomen.jpg',
           title: 'Jeans',
           price: 'A$69.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?women,joggers',
+          image: '/images/joggerswomen.jpg',
           title: 'Joggers',
           price: 'A$49.99',
           sizes: ['S', 'M', 'L'],
         },
         {
-          image: 'https://source.unsplash.com/featured/?women,pants',
+          image: '/images/pants.jpg',
           title: 'Pants',
           price: 'A$59.99',
           sizes: ['S', 'M', 'L'],

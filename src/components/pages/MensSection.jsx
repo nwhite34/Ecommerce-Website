@@ -22,6 +22,7 @@ function MensSection() {
         id: doc.id,
         ...doc.data(),
       }));
+      console.log('Fetched Products:', products);  // Console log for debugging
       setItems(products);
     };
 
@@ -41,6 +42,7 @@ function MensSection() {
       <NavBar />
       <div className="container mx-auto mt-20 pt-20 pb-20">
         <h1 className="text-4xl font-bold mb-8 text-center">Men's Section</h1>
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {items.map((item, index) => (
             <Card

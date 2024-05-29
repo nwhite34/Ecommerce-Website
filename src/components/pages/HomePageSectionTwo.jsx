@@ -1,32 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../config/firebase';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
-// Sample data for categories with Unsplash images
-const categories = [
-  { name: 'Footwear', image: 'https://source.unsplash.com/featured/?footwear' },
-  { name: 'Tops', image: 'https://source.unsplash.com/featured/?tops' },
-  { name: 'Swimwear', image: 'https://source.unsplash.com/featured/?swimwear' },
-  { name: 'Pants', image: 'https://source.unsplash.com/featured/?pants' },
-  { name: 'Dresses', image: 'https://source.unsplash.com/featured/?dresses' },
-  { name: 'Jackets & Coats', image: 'https://source.unsplash.com/featured/?jackets,coats' }
-];
+const HomePageSectionTwo = () => {
+  const [products, setProducts] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-function HomePageSectionTwo() {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const productsRef = collection(db, 'products');
+      const snapshot = await getDocs(productsRef);
+      const productsData = snapshot.docs.map(doc => doc.data());
+      setProducts(productsData);
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + products.length) % products.length);
+  };
+
+  const visibleProducts = products.slice(currentIndex, currentIndex + 7).concat(products.slice(0, Math.max(0, (currentIndex + 7) - products.length)));
+
   return (
     <div className="bg-white py-8 px-4 pt-20 pb-20">
-      <h2 className="text-2xl font-bold text-left mb-4">SEE WHAT'S TRENDING</h2>
-      <div className="flex flex-wrap justify-center items-center gap-4">
-        {categories.map((category) => (
-          <a href={`/${category.name.toLowerCase()}`} key={category.name} className="flex flex-col items-center gap-2">
-            <div className="w-44 h-44 flex justify-center items-center bg-gray-200 rounded-full overflow-hidden transition-transform duration-300 transform hover:scale-105">
-              <img src={category.image} alt={category.name} className="object-cover rounded-full w-full h-full" />
-            </div>
-            <p className="text-lg font-semibold">{category.name.toUpperCase()}</p>
-          </a>
-        ))}
+      <h2 className="text-2xl font-bold text-center mb-4">SEE WHAT'S TRENDING</h2>
+      <div className="flex items-center justify-center gap-4">
+        <button onClick={handlePrev} className="text-2xl"><FaChevronLeft /></button>
+        <div className="flex gap-4 overflow-hidden justify-center w-full">
+          {visibleProducts.map((product, index) => (
+            <a href={`/${product.title.toLowerCase().replace(/\s+/g, '-')}`} key={index} className="flex flex-col items-center gap-2">
+              <div className="w-52 h-52 flex justify-center items-center bg-gray-200 rounded-full overflow-hidden transition-transform duration-300 transform hover:scale-105">
+                <img src={product.image} alt={product.title} className="object-cover rounded-full w-full h-full" />
+              </div>
+              <p className="text-lg font-semibold text-center">{product.title.toUpperCase()}</p>
+            </a>
+          ))}
+        </div>
+        <button onClick={handleNext} className="text-2xl"><FaChevronRight /></button>
       </div>
     </div>
   );
-}
-
+};
 
 export default HomePageSectionTwo;

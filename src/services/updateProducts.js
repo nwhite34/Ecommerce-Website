@@ -1,6 +1,9 @@
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
+const { getStorage } = require('firebase-admin/storage');
 const dotenv = require('dotenv');
+const fs = require('fs');
+const path = require('path');
 
 dotenv.config();
 
@@ -12,119 +15,121 @@ const serviceAccount = {
 };
 
 initializeApp({
-  credential: cert(serviceAccount)
+  credential: cert(serviceAccount),
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 });
 
 const db = getFirestore();
+const storage = getStorage().bucket(process.env.FIREBASE_STORAGE_BUCKET);
 
 const products = [
   {
-    image: 'https://source.unsplash.com/featured/?men,formal-shirt',
+    image: 'images/formalshirt.jpg',
     title: 'Formal Shirt',
     price: 'A$59.99',
     sizes: ['S', 'M', 'L'],
     category: 'men',
   },
   {
-    image: 'https://source.unsplash.com/featured/?men,casual-shirt',
+    image: 'images/casualshirt.jpg',
     title: 'Casual Shirt',
     price: 'A$69.99',
     sizes: ['S', 'M', 'L'],
     category: 'men',
   },
   {
-    image: 'https://source.unsplash.com/featured/?men,denim-shirt',
+    image: 'images/denimshirt.jpg',
     title: 'Denim Shirt',
     price: 'A$49.99',
     sizes: ['S', 'M', 'L'],
     category: 'men',
   },
   {
-    image: 'https://source.unsplash.com/featured/?men,linen-shirt',
+    image: 'images/linenshirt.jpg',
     title: 'Linen Shirt',
     price: 'A$79.99',
     sizes: ['S', 'M', 'L'],
     category: 'men',
   },
   {
-    image: 'https://source.unsplash.com/featured/?men,chinos',
+    image: 'images/chinos.jpg',
     title: 'Chinos',
     price: 'A$59.99',
     sizes: ['S', 'M', 'L'],
     category: 'men',
   },
   {
-    image: 'https://source.unsplash.com/featured/?men,jeans',
+    image: 'images/Jeansmen.jpg',
     title: 'Jeans',
     price: 'A$69.99',
     sizes: ['S', 'M', 'L'],
     category: 'men',
   },
   {
-    image: 'https://source.unsplash.com/featured/?men,joggers',
+    image: 'images/Joggersmen.jpg',
     title: 'Joggers',
     price: 'A$49.99',
     sizes: ['S', 'M', 'L'],
     category: 'men',
   },
   {
-    image: 'https://source.unsplash.com/featured/?men,dress-pants',
+    image: 'images/dresspants.jpg',
     title: 'Dress Pants',
     price: 'A$79.99',
     sizes: ['S', 'M', 'L'],
     category: 'men',
   },
   {
-    image: 'https://source.unsplash.com/featured/?women,formal-dress',
+    image: 'images/formadress.jpg',
     title: 'Formal Dress',
     price: 'A$79.99',
     sizes: ['S', 'M', 'L'],
     category: 'women',
   },
   {
-    image: 'https://source.unsplash.com/featured/?women,casual-dress',
+    image: 'images/casualdress.jpg',
     title: 'Casual Dress',
     price: 'A$69.99',
     sizes: ['S', 'M', 'L'],
     category: 'women',
   },
   {
-    image: 'https://source.unsplash.com/featured/?women,denim-jacket',
+    image: 'images/decomjacket.jpg',
     title: 'Denim Jacket',
     price: 'A$89.99',
     sizes: ['S', 'M', 'L'],
     category: 'women',
   },
   {
-    image: 'https://source.unsplash.com/featured/?women,linen-top',
+    image: 'images/linentop.jpg',
     title: 'Linen Top',
     price: 'A$49.99',
     sizes: ['S', 'M', 'L'],
     category: 'women',
   },
   {
-    image: 'https://source.unsplash.com/featured/?women,skirt',
+    image: 'images/skirt.jpeg',
     title: 'Skirt',
     price: 'A$39.99',
     sizes: ['S', 'M', 'L'],
     category: 'women',
   },
   {
-    image: 'https://source.unsplash.com/featured/?women,jeans',
+    image: 'images/jeanswomen.jpg',
     title: 'Jeans',
     price: 'A$69.99',
     sizes: ['S', 'M', 'L'],
     category: 'women',
   },
   {
-    image: 'https://source.unsplash.com/featured/?women,joggers',
+    image: 'images/joggerswomen.jpg',
     title: 'Joggers',
     price: 'A$49.99',
     sizes: ['S', 'M', 'L'],
     category: 'women',
   },
   {
-    image: 'https://source.unsplash.com/featured/?women,pants',
+    image: 'images/pants.jpg',
     title: 'Pants',
     price: 'A$59.99',
     sizes: ['S', 'M', 'L'],
@@ -132,7 +137,30 @@ const products = [
   },
 ];
 
-const addProductsToFirestore = async () => {
+const uploadImage = async (filePath, fileName) => {
+  try {
+    const fileBuffer = fs.readFileSync(filePath);
+    const fileRef = storage.file(`products/${fileName}`);
+    await fileRef.save(fileBuffer);
+    const downloadURL = `https://storage.googleapis.com/${process.env.FIREBASE_STORAGE_BUCKET}/products/${fileName}`;
+    console.log(`Uploaded ${fileName} to ${downloadURL}`);
+    return downloadURL;
+  } catch (error) {
+    console.error(`Error uploading ${fileName}:`, error);
+    throw error;
+  }
+};
+
+const updateProducts = async () => {
+  const imageFolderPath = path.resolve(__dirname, '../images');
+  const updatedProducts = [];
+
+  for (let product of products) {
+    const imagePath = path.join(imageFolderPath, path.basename(product.image));
+    const downloadURL = await uploadImage(imagePath, path.basename(product.image));
+    updatedProducts.push({ ...product, image: downloadURL });
+  }
+
   const productsRef = db.collection('products');
 
   // Clear existing products
@@ -143,31 +171,10 @@ const addProductsToFirestore = async () => {
   });
 
   // Add new products
-  for (let product of products) {
+  for (let product of updatedProducts) {
     await productsRef.add(product);
   }
-  console.log('Products added successfully');
+  console.log('Products updated successfully');
 };
 
-const removeDuplicates = async () => {
-  const productsRef = db.collection('products');
-  const snapshot = await productsRef.get();
-  const titles = new Set();
-
-  snapshot.forEach(doc => {
-    const product = doc.data();
-    if (titles.has(product.title)) {
-      doc.ref.delete().then(() => {
-        console.log(`Document ${doc.id} deleted`);
-      }).catch((error) => {
-        console.error(`Error deleting document ${doc.id}: `, error);
-      });
-    } else {
-      titles.add(product.title);
-    }
-  });
-};
-
-addProductsToFirestore()
-  .then(removeDuplicates)
-  .catch(err => console.error('Error updating products:', err));
+updateProducts().catch(err => console.error('Error updating products:', err));

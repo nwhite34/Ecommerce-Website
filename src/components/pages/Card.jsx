@@ -1,4 +1,3 @@
-// src/components/pages/Card.jsx
 import React, { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
