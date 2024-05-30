@@ -12,18 +12,27 @@ function MensSection() {
   const [items, setItems] = useState([]);
   const { addToWishlist } = useWishlist();
   const { addToCart, toggleCart } = useCart();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const productsRef = collection(db, 'products');
-      const q = query(productsRef, where('category', '==', 'men'));
-      const querySnapshot = await getDocs(q);
-      const products = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      console.log('Fetched Products:', products);  // Console log for debugging
-      setItems(products);
+      try {
+        const productsRef = collection(db, 'products');
+        const q = query(productsRef, where('category', '==', 'men'));
+        const querySnapshot = await getDocs(q);
+        const products = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        console.log('Fetched Products:', products);  // Console log for debugging
+        setItems(products);
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        setError('Failed to fetch products.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchProducts();
@@ -34,6 +43,9 @@ function MensSection() {
     toggleCart();
   };
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
   return (
     <>
       <div className="absolute top-0 w-full z-50">
@@ -42,7 +54,6 @@ function MensSection() {
       <NavBar />
       <div className="container mx-auto mt-20 pt-20 pb-20">
         <h1 className="text-4xl font-bold mb-8 text-center">Men's Section</h1>
-        
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {items.map((item, index) => (
             <Card
@@ -51,8 +62,8 @@ function MensSection() {
               title={item.title}
               price={item.price}
               sizes={item.sizes}
-              onAddToCart={handleAddToCart}
-              onAddToWishlist={addToWishlist}
+              onAddToCart={() => handleAddToCart(item)}
+              onAddToWishlist={() => addToWishlist(item)}
             />
           ))}
         </div>

@@ -27,7 +27,7 @@ export const WishlistProvider = ({ children }) => {
         const docRef = doc(db, 'users', user.uid, 'wishlist', 'wishlistData');
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setWishlist(docSnap.data().wishlist);
+          setWishlist(docSnap.data().wishlist || []);
         }
       } catch (error) {
         console.error('Error loading wishlist from Firestore:', error);
@@ -37,7 +37,6 @@ export const WishlistProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log('Auth State Changed:', currentUser); // Log the authentication state
       setUser(currentUser);
       if (currentUser) {
         loadWishlistFromFirestore();
@@ -48,9 +47,18 @@ export const WishlistProvider = ({ children }) => {
   }, [loadWishlistFromFirestore]);
 
   const addToWishlist = (item) => {
-    const newWishlist = [...wishlist, item];
-    setWishlist(newWishlist);
-    saveWishlistToFirestore(newWishlist);
+    const existingItem = wishlist.find(wishlistItem => wishlistItem.title === item.title);
+    if (existingItem) {
+      const newWishlist = wishlist.map(wishlistItem =>
+        wishlistItem.title === item.title ? item : wishlistItem
+      );
+      setWishlist(newWishlist);
+      saveWishlistToFirestore(newWishlist);
+    } else {
+      const newWishlist = [...wishlist, item];
+      setWishlist(newWishlist);
+      saveWishlistToFirestore(newWishlist);
+    }
   };
 
   const removeFromWishlist = (title) => {

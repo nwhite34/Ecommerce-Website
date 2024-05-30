@@ -1,4 +1,3 @@
-// src/components/SideCart.jsx
 import React from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
@@ -14,6 +13,12 @@ function SideCart({ isOpen, onClose }) {
     onClose();
     navigate('/checkout');
   };
+
+  // Ensure item.price is a number by removing non-numeric characters
+  const totalPrice = cart.reduce((total, item) => {
+    const price = parseFloat(item.price.replace(/[^0-9.-]+/g, ''));
+    return total + price;
+  }, 0);
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-end z-50">
@@ -37,12 +42,15 @@ function SideCart({ isOpen, onClose }) {
                 </li>
               ))}
             </ul>
-            <button
-              onClick={handleCheckout}
-              className="w-full bg-blue-500 text-white py-2 mt-4 rounded-md hover:bg-blue-700"
-            >
-              Checkout
-            </button>
+            <div className="mt-4">
+              <p className="text-lg font-bold">Total: AUD${totalPrice.toFixed(2)}</p>
+              <button
+                onClick={handleCheckout}
+                className="w-full bg-blue-500 text-white py-2 mt-4 rounded-md hover:bg-blue-700"
+              >
+                Checkout
+              </button>
+            </div>
           </>
         )}
       </div>

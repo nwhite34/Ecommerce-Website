@@ -11,6 +11,27 @@ function LoginModal({ isOpen, onClose, isSignUp, switchToSignUp, switchToSignIn 
 
   if (!isOpen) return null;
 
+  const getErrorMessage = (code) => {
+    switch (code) {
+      case 'auth/email-already-in-use':
+        return 'This email address is already in use.';
+      case 'auth/invalid-email':
+        return 'Please enter a valid email address.';
+      case 'auth/operation-not-allowed':
+        return 'Operation not allowed. Please contact support.';
+      case 'auth/weak-password':
+        return 'Password is too weak. Please choose a stronger password.';
+      case 'auth/user-disabled':
+        return 'This account has been disabled.';
+      case 'auth/user-not-found':
+        return 'No account found with this email address.';
+      case 'auth/wrong-password':
+        return 'Incorrect password. Please try again.';
+      default:
+        return 'An unexpected error occurred. Please try again.';
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -28,7 +49,8 @@ function LoginModal({ isOpen, onClose, isSignUp, switchToSignUp, switchToSignIn 
       }
       onClose(); // Close the modal after successful sign-up or sign-in
     } catch (error) {
-      setError(error.message);
+      const errorMessage = getErrorMessage(error.code);
+      setError(errorMessage);
     }
   };
 
@@ -37,7 +59,7 @@ function LoginModal({ isOpen, onClose, isSignUp, switchToSignUp, switchToSignIn 
       <div className="bg-white p-8 rounded-lg max-w-md w-full relative">
         <FaTimes className="cursor-pointer text-gray-600 absolute top-4 right-4" onClick={onClose} />
         <h2 className="text-2xl font-bold mb-4">{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
-        {error && <div className="mb-4 text-red-500">Firebase: Error ({error})</div>}
+        {error && <div className="mb-4 text-red-500">{error}</div>}
         <form onSubmit={handleSubmit}>
           {isSignUp && (
             <div className="mb-4">

@@ -105,10 +105,12 @@ function NavBar() {
   };
 
   const handleResultClick = (category, title) => {
-    if (category === 'men') {
+    if (title.toLowerCase() === 'men') {
       navigate('/mens-section');
-    } else if (category === 'women') {
+    } else if (title.toLowerCase() === 'women') {
       navigate('/womens-section');
+    } else {
+      navigate(`/product/${encodeURIComponent(title.toLowerCase().replace(/\s+/g, '-'))}`);
     }
     clearSearch();
   };
@@ -139,28 +141,36 @@ function NavBar() {
           <div className="flex items-center justify-end w-full">
             <div className="hidden sm:flex relative mx-auto w-full max-w-md">
               <label htmlFor="search" className="sr-only">Search</label>
-              <input
-                id="search"
-                type="text"
-                value={searchValue}
-                onChange={handleSearchChange}
-                placeholder="Search..."
-                className={`px-4 py-2 w-full text-gray-700 focus:outline-none focus:ring focus:border-blue-300 rounded-md ${showSearchBar ? 'block' : 'hidden'}`}
-              />
-              <FaTimes
-                onClick={clearSearch}
-                className={`cursor-pointer text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2 ${showSearchBar ? 'block' : 'hidden'}`}
-              />
-              <FaSearch
-                onClick={performSearch}
-                className="hidden sm:block cursor-pointer text-gray-600 absolute right-14 top-1/2 transform -translate-y-1/2"
-              />
+              <div className="relative w-full">
+                <input
+                  id="search"
+                  type="text"
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  placeholder="Search..."
+                  className="px-6 py-3 w-full text-gray-700 bg-gray-100 border rounded-full focus:outline-none focus:ring-0 focus:border-transparent"
+                />
+                {searchValue && (
+                  <FaTimes
+                    onClick={clearSearch}
+                    className="cursor-pointer text-gray-600 absolute right-10 top-1/2 transform -translate-y-1/2"
+                  />
+                )}
+                <FaSearch
+                  onClick={performSearch}
+                  className="cursor-pointer text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2"
+                />
+              </div>
               {searchResults.length > 0 && (
                 <div className="absolute top-full mt-2 w-full bg-white shadow-lg rounded-md z-20">
                   <ul>
                     {searchResults.map((result) => (
-                      <li key={result.id} className="p-4 border-b last:border-b-0 flex items-center cursor-pointer" onClick={() => handleResultClick(result.category, result.title)}>
-                        <img src={result.image} alt={result.title} className="w-10 h-10 inline-block mr-4"/>
+                      <li
+                        key={result.id}
+                        className="p-4 border-b last:border-b-0 flex items-center cursor-pointer"
+                        onClick={() => handleResultClick(result.category, result.title)}
+                      >
+                        <img src={result.image} alt={result.title} className="w-10 h-10 inline-block mr-4" />
                         <span>{result.title}</span>
                       </li>
                     ))}
@@ -168,6 +178,7 @@ function NavBar() {
                 </div>
               )}
             </div>
+
             <FaSearch onClick={performSearch} className="text-gray-600 sm:hidden cursor-pointer mr-4" />
 
             {user ? (
@@ -204,24 +215,32 @@ function NavBar() {
         {showSearchBar && (
           <div className="relative w-full px-8 py-4 sm:hidden">
             <label htmlFor="mobile-search" className="sr-only">Search</label>
-            <input
-              id="mobile-search"
-              type="text"
-              value={searchValue}
-              onChange={handleSearchChange}
-              placeholder="Search..."
-              className="px-4 py-2 w-full text-gray-700 focus:outline-none focus:ring focus:border-blue-300 rounded-md"
-            />
-            <FaTimes
-              onClick={clearSearch}
-              className="cursor-pointer text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2"
-            />
+            <div className="relative w-full">
+              <input
+                id="mobile-search"
+                type="text"
+                value={searchValue}
+                onChange={handleSearchChange}
+                placeholder="Search..."
+                className="px-6 py-3 w-full text-gray-700 bg-gray-100 focus:outline-none focus:ring-0 focus:border-transparent rounded-full"
+              />
+              {searchValue && (
+                <FaTimes
+                  onClick={clearSearch}
+                  className="cursor-pointer text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2"
+                />
+              )}
+            </div>
             {searchResults.length > 0 && (
               <div className="absolute top-full mt-2 w-full max-w-xs mx-auto bg-white shadow-lg rounded-md z-20">
                 <ul>
                   {searchResults.map((result) => (
-                    <li key={result.id} className="p-4 border-b last:border-b-0 flex items-center cursor-pointer" onClick={() => handleResultClick(result.category, result.title)}>
-                      <img src={result.image} alt={result.title} className="w-10 h-10 inline-block mr-4"/>
+                    <li
+                      key={result.id}
+                      className="p-4 border-b last:border-b-0 flex items-center cursor-pointer"
+                      onClick={() => handleResultClick(result.category, result.title)}
+                    >
+                      <img src={result.image} alt={result.title} className="w-10 h-10 inline-block mr-4" />
                       <span>{result.title}</span>
                     </li>
                   ))}

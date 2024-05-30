@@ -4,13 +4,12 @@ import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 
 function Card({ image, title, price, sizes }) {
-  const { addToCart, toggleCart } = useCart();
+  const { addToCart } = useCart();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const [isWishlisted, setIsWishlisted] = useState(wishlist.some((item) => item.title === title));
 
   const handleAddToCart = (size) => {
     addToCart({ image, title, price, size });
-    toggleCart(); // Show the cart dropdown when an item is added
   };
 
   const handleWishlistClick = () => {

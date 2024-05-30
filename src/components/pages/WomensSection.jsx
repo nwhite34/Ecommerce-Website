@@ -11,18 +11,28 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 function WomenSection() {
   const [items, setItems] = useState([]);
   const { addToWishlist } = useWishlist();
-  const { addToCart } = useCart(); // Removed toggleCart
+  const { addToCart } = useCart(); 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const productsRef = collection(db, 'products');
-      const q = query(productsRef, where('category', '==', 'women'));
-      const querySnapshot = await getDocs(q);
-      const products = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setItems(products);
+      try {
+        const productsRef = collection(db, 'products');
+        const q = query(productsRef, where('category', '==', 'women'));
+        const querySnapshot = await getDocs(q);
+        const products = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        console.log('Fetched Products:', products);  // Console log for debugging
+        setItems(products);
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        setError('Failed to fetch products.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchProducts();
@@ -30,8 +40,10 @@ function WomenSection() {
 
   const handleAddToCart = (item) => {
     addToCart(item);
-    // Removed toggleCart
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <>
@@ -49,8 +61,8 @@ function WomenSection() {
               title={item.title}
               price={item.price}
               sizes={item.sizes}
-              onAddToCart={handleAddToCart}
-              onAddToWishlist={addToWishlist}
+              onAddToCart={() => handleAddToCart(item)}
+              onAddToWishlist={() => addToWishlist(item)}
             />
           ))}
         </div>

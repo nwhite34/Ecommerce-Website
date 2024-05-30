@@ -1,13 +1,26 @@
 import React from "react";
 import salebanner from '../images/collection.png';
+import { useNavigate } from 'react-router-dom';
 
 const Footer1 = () => {
+    const navigate = useNavigate();
+
+    const handleBannerClick = () => {
+        navigate('/');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     return (
         <div className="mx-auto container py-16 xl:px-20 lg:px-12 sm:px-6 px-4">
             <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
                 <div className="flex flex-col items-center lg:items-start lg:mr-16">
                     <div className="lg:ml-10">
-                        <img src={salebanner} alt="Sale Banner" className="w-full h-full object-cover" />
+                        <img 
+                            src={salebanner} 
+                            alt="Sale Banner" 
+                            className="w-full h-full object-cover cursor-pointer" 
+                            onClick={handleBannerClick} 
+                        />
                     </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 lg:gap-12 md:col-span-1 lg:col-span-3">
