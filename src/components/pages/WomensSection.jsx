@@ -7,6 +7,7 @@ import { useWishlist } from '../../context/WishlistContext';
 import { useCart } from '../../context/CartContext';
 import { db } from '../../config/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
+import { Link } from 'react-router-dom';
 
 function WomenSection() {
   const [items, setItems] = useState([]);
@@ -55,15 +56,19 @@ function WomenSection() {
         <h1 className="text-4xl font-bold mb-8 text-center">Women's Section</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {items.map((item, index) => (
-            <Card
+            <Link
+              to={`/product/${encodeURIComponent(item.title.toLowerCase().replace(/\s+/g, '-'))}`}
               key={index}
-              image={item.image}
-              title={item.title}
-              price={item.price}
-              sizes={item.sizes}
-              onAddToCart={() => handleAddToCart(item)}
-              onAddToWishlist={() => addToWishlist(item)}
-            />
+            >
+              <Card
+                image={item.image}
+                title={item.title}
+                price={item.price}
+                sizes={item.sizes}
+                onAddToCart={() => handleAddToCart(item)}
+                onAddToWishlist={() => addToWishlist(item)}
+              />
+            </Link>
           ))}
         </div>
       </div>

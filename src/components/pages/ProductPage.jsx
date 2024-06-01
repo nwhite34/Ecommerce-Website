@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
-import { FaHeart, FaRegHeart, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaHeart, FaRegHeart, FaChevronLeft, FaChevronRight, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import Header from '../Navbar';
 import Footer from '../Footer';
 import PromoBar from '../PromoBar';
-import { Link } from 'react-router-dom';
+import SizeGuideModal from './SizeGuideModal';
+import ShippingHandlingModal from './ShippingHandlingModal';
 
 const ProductPage = () => {
   const { title } = useParams();
@@ -20,6 +21,11 @@ const ProductPage = () => {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
+  const [deliveryOpen, setDeliveryOpen] = useState(false);
+  const [sizeFitOpen, setSizeFitOpen] = useState(false);
+  const [shippingHandlingOpen, setShippingHandlingOpen] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -90,20 +96,92 @@ const ProductPage = () => {
           </button>
           <h3 className="text-2xl font-bold mb-2">{product.title}</h3>
           <p className="text-xl text-gray-700 mb-4">{product.price}</p>
-          <div className="mt-4">
-            {product.sizes.map(size => (
-              <button
-                key={size}
-                className="bg-blue-500 text-white px-4 py-2 rounded mr-2 mb-2"
-                onClick={() => handleAddToCart(size)}
-              >
-                {size}
-              </button>
-            ))}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center">
+              {product.sizes.map(size => (
+                <button
+                  key={size}
+                  className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+                  onClick={() => handleAddToCart(size)}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="border-t mt-4 pt-4">
+            <div 
+              className="flex justify-between items-center cursor-pointer"
+              onClick={() => setDetailsOpen(!detailsOpen)}
+            >
+              <h4 className="text-xl font-bold mb-4">Details</h4>
+              {detailsOpen ? <FaChevronUp /> : <FaChevronDown />}
+            </div>
+            {detailsOpen && (
+              <div>
+                <p><strong>Brand:</strong> {product.brand}</p>
+                <p><strong>Composition:</strong> {product.material}</p>
+                <p><strong>Care Instructions:</strong> {product.careInstructions}</p>
+                <p><strong>Fit:</strong> {product.fit || 'Regular'}</p>
+                <p><strong>Length:</strong> {product.length || 'Standard'}</p>
+                <p><strong>Style:</strong> {product.style || 'Casual'}</p>
+                <p><strong>Elasticity:</strong> {product.elasticity || 'Non-stretch'}</p>
+              </div>
+            )}
+          </div>
+          <div className="border-t mt-4 pt-4">
+            <div 
+              className="flex justify-between items-center cursor-pointer"
+              onClick={() => setSizeFitOpen(!sizeFitOpen)}
+            >
+              <h4 className="text-xl font-bold mb-4">Size & Fit</h4>
+              {sizeFitOpen ? <FaChevronUp /> : <FaChevronDown />}
+            </div>
+            {sizeFitOpen && (
+              <div>
+                <p>Please refer to our size guide to see what size is right for you! Keep in mind, sizes between brands are likely to vary, so please use the measurements as a guide only.</p>
+                <button className="text-blue-500 underline" onClick={() => setSizeGuideOpen(true)}>View Size Guide</button>
+              </div>
+            )}
+          </div>
+          <div className="border-t mt-4 pt-4">
+            <div 
+              className="flex justify-between items-center cursor-pointer"
+              onClick={() => setDeliveryOpen(!deliveryOpen)}
+            >
+              <h4 className="text-xl font-bold mb-4">Delivery & Returns</h4>
+              {deliveryOpen ? <FaChevronUp /> : <FaChevronDown />}
+            </div>
+            {deliveryOpen && (
+              <div>
+                <table className="w-full text-left">
+                  <thead>
+                    <tr>
+                      <th className="border px-4 py-2">Shipping Methods</th>
+                      <th className="border px-4 py-2">Shipping Times</th>
+                      <th className="border px-4 py-2">Cost</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border px-4 py-2">Express</td>
+                      <td className="border px-4 py-2">Metro 1-4 business days, Regional/Rural 1-7 business days</td>
+                      <td className="border px-4 py-2">$13.99</td>
+                    </tr>
+                    <tr>
+                      <td className="border px-4 py-2">Standard</td>
+                      <td className="border px-4 py-2">Metro 2-10 business days, Regional/Rural 2-13 business days</td>
+                      <td className="border px-4 py-2">$10.99 or $2 for orders over $100</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p className="mt-4">For other delivery methods, <button className="text-blue-500 underline" onClick={() => setShippingHandlingOpen(true)}>click here</button> for shipping and delivery times.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
-      <div className="container mx-auto mt-10">
+      <div className="container mx-auto mt-40 mb-40">
         <h2 className="text-2xl font-bold text-left mb-4">OTHER POPULAR PRODUCTS</h2>
         <div className="bg-white py-8 px-4">
           <div className="flex items-center justify-center gap-4">
@@ -123,6 +201,8 @@ const ProductPage = () => {
         </div>
       </div>
       <Footer />
+      <SizeGuideModal isOpen={sizeGuideOpen} onClose={() => setSizeGuideOpen(false)} />
+      <ShippingHandlingModal isOpen={shippingHandlingOpen} onClose={() => setShippingHandlingOpen(false)} />
     </>
   );
 };

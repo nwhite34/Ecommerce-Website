@@ -1,0 +1,29 @@
+.step-indicator {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  margin: 0 10px; /* Adjust margin for spacing */
+}
+
+.step-indicator.active {
+  background-color: #000;
+}
+
+.step-line {
+  width: 50px; /* Adjust the width based on the space between circles */
+  height: 2px;
+  background-color: #ccc;
+  margin: 0 10px;
+  position: relative;
+  top: -15px; /* Adjust to align the line vertically centered to the circle */
+}
+
+.step-line.active {
+  background-color: #000;
+}

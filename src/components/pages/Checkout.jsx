@@ -1,42 +1,63 @@
-import React from 'react';
-import { useCart } from '../../context/CartContext';
+import React, { useState } from 'react';
+import Step1Information from './Step1Information';
+import Step2Fulfillment from './Step2Fulfillment';
+import Step3Shipping from './Step3Shipping';
+import Step4Payment from './Step4Payment';
+import StepIndicator from './StepIndicator';
 import NavBar from '../Navbar';
 import PromoBar from '../PromoBar';
 import Footer from '../Footer';
+import CartSummary from './CartSummary';
+import { useCart } from '../../context/CartContext';
 
-function Checkout() {
-  const { cart } = useCart();
-  const totalPrice = cart.reduce((total, item) => total + parseFloat(item.price.replace(/[^0-9.-]+/g, '')), 0).toFixed(2);
+const Checkout = () => {
+  const { clearCart } = useCart();
+  const [step, setStep] = useState(1);
+  const [orderProcessed, setOrderProcessed] = useState(false);
+
+  const nextStep = () => setStep(step + 1);
+  const prevStep = () => setStep(step - 1);
+
+  const handleOrderProcess = () => {
+    setOrderProcessed(true);
+    clearCart();
+  };
+
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return <Step1Information nextStep={nextStep} />;
+      case 2:
+        return <Step2Fulfillment nextStep={nextStep} prevStep={prevStep} />;
+      case 3:
+        return <Step3Shipping nextStep={nextStep} prevStep={prevStep} />;
+      case 4:
+        return <Step4Payment prevStep={prevStep} handleOrderProcess={handleOrderProcess} />;
+      default:
+        return <Step1Information nextStep={nextStep} />;
+    }
+  };
 
   return (
     <>
-      <div className="absolute top-0 w-full z-50">
+      <div className="fixed top-0 w-full z-50">
         <PromoBar />
       </div>
       <NavBar />
-      <div className="container mx-auto pt-20 pb-20 min-h-screen flex flex-col justify-center">
+      <div className="container mx-auto pt-40 pb-20 min-h-screen flex flex-col justify-center items-center">
+        <StepIndicator step={step} className="mb-8" />
         <h1 className="text-4xl font-bold mb-8 text-center">Checkout</h1>
-        {cart.length === 0 ? (
-          <p className="text-center text-xl">Your cart is empty</p>
+        {orderProcessed ? (
+          <div className="text-center text-2xl font-bold text-green-500">
+            Your order is being processed!
+          </div>
         ) : (
-          <div className="flex flex-col items-center">
-            <ul className="w-full max-w-3xl">
-              {cart.map((item, index) => (
-                <li key={index} className="flex items-center mb-4 border-b pb-4">
-                  <img src={item.image} alt={item.title} className="w-20 h-20 object-cover rounded mr-4" />
-                  <div className="flex-grow">
-                    <p className="font-bold">{item.title}</p>
-                    <p>Price: {item.price}</p>
-                    <p>Size: {item.size}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <div className="w-full max-w-3xl mt-8">
-              <h2 className="text-2xl font-bold mb-4">Total: AUD${totalPrice}</h2>
-              <button className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-700">
-                Place Order
-              </button>
+          <div className="flex flex-col md:flex-row justify-between w-full max-w-6xl px-4">
+            <div className="w-full max-w-3xl mb-8 md:mb-0">
+              {renderStep()}
+            </div>
+            <div className="md:ml-8 w-full max-w-3xl">
+              <CartSummary />
             </div>
           </div>
         )}
@@ -44,6 +65,6 @@ function Checkout() {
       <Footer />
     </>
   );
-}
+};
 
 export default Checkout;

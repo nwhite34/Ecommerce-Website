@@ -60,12 +60,17 @@ export const CartProvider = ({ children }) => {
     saveCartToFirestore(newCart);
   };
 
+  const clearCart = () => {
+    setCart([]);
+    saveCartToFirestore([]);
+  };
+
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, toggleCart, isCartOpen }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, toggleCart, isCartOpen, clearCart }}>
       {children}
     </CartContext.Provider>
   );
