@@ -60,7 +60,7 @@ const SizeGuidePage = () => {
               {visibleProducts.map((product, index) => (
                 <Link to={`/product/${encodeURIComponent(product.title.toLowerCase().replace(/\s+/g, '-'))}`} key={index} className="flex flex-col items-center gap-2">
                   <div className="w-64 h-64 flex justify-center items-center bg-gray-200 rounded-lg overflow-hidden transition-transform duration-300 transform hover:scale-105">
-                    <img src={product.image} alt={product.title} className="object-contain w-full h-full" />
+                    <img src={product.mainImage} alt={product.title} className="object-contain w-full h-full" />
                   </div>
                   <p className="text-lg font-semibold text-center">{product.title.toUpperCase()}</p>
                 </Link>

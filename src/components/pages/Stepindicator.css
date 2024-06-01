@@ -1,3 +1,4 @@
+/* Default styles for larger screens */
 .step-indicator {
   width: 30px;
   height: 30px;
@@ -26,4 +27,19 @@
 
 .step-line.active {
   background-color: #000;
+}
+
+/* Styles for smaller screens, including iPhones */
+@media (max-width: 600px) {
+  .step-indicator {
+    width: 20px; /* Reduce size for smaller screens */
+    height: 20px;
+    margin: 0 5px; /* Reduce margin for smaller screens */
+  }
+
+  .step-line {
+    width: 30px; /* Reduce width for smaller screens */
+    margin: 0 5px; /* Reduce margin for smaller screens */
+    top: -10px; /* Adjust vertical alignment */
+  }
 }

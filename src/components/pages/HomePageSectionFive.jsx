@@ -33,7 +33,7 @@ function HomePageSectionTwo() {
         {products.map((product) => (
           <Link to={`/product/${encodeURIComponent(product.title.toLowerCase().replace(/\s+/g, '-'))}`} key={product.id} className="flex flex-col items-center gap-2">
             <div className="w-44 h-44 flex justify-center items-center bg-gray-200 rounded-full overflow-hidden transition-transform duration-300 transform hover:scale-105">
-              <img src={product.image} alt={product.title} className="object-cover rounded-full w-full h-full" />
+              <img src={product.mainImage} alt={product.title} className="object-cover rounded-full w-full h-full" />
             </div>
             <p className="text-lg font-semibold">{product.title.toUpperCase()}</p>
           </Link>

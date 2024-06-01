@@ -3,16 +3,13 @@ import NavBar from '../Navbar';
 import PromoBar from '../PromoBar';
 import Footer from '../Footer';
 import Card from './Card';
-import { useWishlist } from '../../context/WishlistContext';
 import { useCart } from '../../context/CartContext';
 import { db } from '../../config/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { Link } from 'react-router-dom';
 
 function MensSection() {
   const [items, setItems] = useState([]);
-  const { addToWishlist } = useWishlist();
-  const { addToCart, toggleCart } = useCart();
+  const { addToCart } = useCart();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -39,9 +36,8 @@ function MensSection() {
     fetchProducts();
   }, []);
 
-  const handleAddToCart = (item) => {
-    addToCart(item);
-    toggleCart();
+  const handleAddToCart = (item, size) => {
+    addToCart({ ...item, size });
   };
 
   if (loading) return <div>Loading...</div>;
@@ -57,19 +53,16 @@ function MensSection() {
         <h1 className="text-4xl font-bold mb-8 text-center">Men's Section</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {items.map((item, index) => (
-            <Link
-              to={`/product/${encodeURIComponent(item.title.toLowerCase().replace(/\s+/g, '-'))}`}
-              key={index}
-            >
+            <div key={index}>
               <Card
-                image={item.image}
+                mainImage={item.mainImage}
                 title={item.title}
                 price={item.price}
                 sizes={item.sizes}
-                onAddToCart={() => handleAddToCart(item)}
-                onAddToWishlist={() => addToWishlist(item)}
+                onAddToCart={(size) => handleAddToCart(item, size)}
+                showWishlist={false} // Disable wishlist hearts
               />
-            </Link>
+            </div>
           ))}
         </div>
       </div>

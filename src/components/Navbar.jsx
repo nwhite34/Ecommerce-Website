@@ -170,7 +170,7 @@ function NavBar() {
                         className="p-4 border-b last:border-b-0 flex items-center cursor-pointer"
                         onClick={() => handleResultClick(result.category, result.title)}
                       >
-                        <img src={result.image} alt={result.title} className="w-10 h-10 inline-block mr-4" />
+                        <img src={result.mainImage} alt={result.title} className="w-10 h-10 inline-block mr-4" />
                         <span>{result.title}</span>
                       </li>
                     ))}
@@ -240,7 +240,7 @@ function NavBar() {
                       className="p-4 border-b last:border-b-0 flex items-center cursor-pointer"
                       onClick={() => handleResultClick(result.category, result.title)}
                     >
-                      <img src={result.image} alt={result.title} className="w-10 h-10 inline-block mr-4" />
+                      <img src={result.mainImage} alt={result.title} className="w-10 h-10 inline-block mr-4" />
                       <span>{result.title}</span>
                     </li>
                   ))}

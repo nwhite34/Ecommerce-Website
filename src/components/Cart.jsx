@@ -17,7 +17,7 @@ function Cart() {
         ) : (
           cart.map((item, index) => (
             <div key={index} className="flex items-center mb-4">
-              <img src={item.image} alt={item.title} className="w-16 h-16 object-cover rounded mr-4" />
+              <img src={item.mainImage} alt={item.title} className="w-16 h-16 object-cover rounded mr-4" />
               <div>
                 <h3 className="font-bold">{item.title}</h3>
                 <p className="text-sm">Price: {item.price}</p>

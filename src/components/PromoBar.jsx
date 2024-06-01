@@ -4,7 +4,7 @@ import { useSpring, animated } from '@react-spring/web';
 function PromoBar() {
   // Content and styles for the promo bar
   const content = {
-    message: "FREE CLICK & COLLECT",
+    message: "20% OFF SALE NOW!",
     bgColor: "#00CFCF",
   };
 

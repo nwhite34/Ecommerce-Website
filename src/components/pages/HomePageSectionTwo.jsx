@@ -42,7 +42,7 @@ const HomePageSectionTwo = () => {
               className="flex flex-col items-center gap-2"
             >
               <div className="w-64 h-64 flex justify-center items-center bg-gray-200 rounded-lg overflow-hidden transition-transform duration-300 transform hover:scale-105">
-                <img src={product.image} alt={product.title} className="object-cover w-full h-full" />
+                <img src={product.mainImage} alt={product.title} className="object-cover w-full h-full" />
               </div>
               <p className="text-lg font-semibold text-center">{product.title.toUpperCase()}</p>
             </Link>

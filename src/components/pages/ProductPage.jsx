@@ -16,6 +16,7 @@ const ProductPage = () => {
   const productTitle = title.replace(/-/g, ' ');
   const [product, setProduct] = useState(null);
   const [otherProducts, setOtherProducts] = useState([]);
+  const [mainImageIndex, setMainImageIndex] = useState(0);
   const [error, setError] = useState(null);
   const { addToCart } = useCart();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
@@ -37,8 +38,8 @@ const ProductPage = () => {
 
         if (foundProduct) {
           setProduct(foundProduct);
+          setMainImageIndex(0); // Set default main image index
           setIsWishlisted(wishlist.some(item => item.id === foundProduct.id));
-          // Filter other products by category
           const otherProductsByCategory = productsData.filter(product => 
             product.title.toLowerCase() !== productTitle.toLowerCase() &&
             product.category === foundProduct.category
@@ -90,7 +91,20 @@ const ProductPage = () => {
       <Header />
       <div className="container mx-auto mt-32 pt-20 pb-20">
         <div className="bg-white shadow-md rounded-md p-6 relative">
-          <img src={product.image} alt={product.title} className="w-full h-96 object-contain mb-4 rounded-lg" />
+          <div className="relative w-full h-96 mb-4">
+            <img src={product.images[mainImageIndex]} alt={product.title} className="w-full h-full object-contain rounded-lg" />
+          </div>
+          <div className="flex justify-center space-x-2 mb-4">
+            {product.images.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`${product.title} thumbnail ${index + 1}`}
+                className={`w-16 h-16 object-cover cursor-pointer ${index === mainImageIndex ? 'border-2 border-blue-500' : ''}`}
+                onClick={() => setMainImageIndex(index)}
+              />
+            ))}
+          </div>
           <button onClick={handleWishlistClick} className="absolute top-4 right-4">
             {isWishlisted ? <FaHeart className="text-red-500 text-2xl" /> : <FaRegHeart className="text-gray-500 text-2xl" />}
           </button>
@@ -190,7 +204,7 @@ const ProductPage = () => {
               {visibleProducts.map((product, index) => (
                 <Link to={`/product/${encodeURIComponent(product.title.toLowerCase().replace(/\s+/g, '-'))}`} key={index} className="flex flex-col items-center gap-2">
                   <div className="w-64 h-64 flex justify-center items-center bg-gray-200 rounded-lg overflow-hidden transition-transform duration-300 transform hover:scale-105">
-                    <img src={product.image} alt={product.title} className="object-contain w-full h-full" />
+                    <img src={product.mainImage} alt={product.title} className="object-contain w-full h-full" />
                   </div>
                   <p className="text-lg font-semibold text-center">{product.title.toUpperCase()}</p>
                 </Link>

@@ -32,10 +32,9 @@ const CartSummary = () => {
           <ul>
             {cart.map((item, index) => (
               <li key={index} className="flex items-center mb-4">
-                <img src={item.image} alt={item.title} className="w-16 h-16 object-cover rounded mr-4" />
+                <img src={item.mainImage} alt={item.title} className="w-16 h-16 object-cover rounded mr-4" />
                 <div>
                   <p className="font-bold">{item.title}</p>
-                  <p>Colour: {item.color || 'White'}</p>
                   <p>Size: {item.size}</p>
                   <p>Price: {item.price}</p>
                   <button onClick={() => removeFromCart(index)} className="text-red-500 mt-2">Remove</button>

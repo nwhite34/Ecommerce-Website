@@ -56,7 +56,7 @@ function HomePageSectionSix() {
               </h2>
             </div>
             <Link to={`/product/${encodeURIComponent(product.title.toLowerCase().replace(/\s+/g, '-'))}`}>
-              <img src={product.image} alt={product.title} className="w-full h-96 object-cover" />
+              <img src={product.mainImage} alt={product.title} className="w-full h-96 object-cover" />
             </Link>
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 mb-4">
               <Link to={`/product/${encodeURIComponent(product.title.toLowerCase().replace(/\s+/g, '-'))}`}>

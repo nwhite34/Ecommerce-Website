@@ -15,7 +15,7 @@ function CartModal({ isOpen, toggleCartModal }) {
         <ul>
           {cart.map((item, index) => (
             <li key={index} className="flex items-center mb-4">
-              <img src={item.image} alt={item.title} className="w-16 h-16 object-cover mr-4" />
+              <img src={item.mainImage} alt={item.title} className="w-16 h-16 object-cover mr-4" />
               <div className="flex-grow">
                 <h3 className="text-lg">{item.title}</h3>
                 <p className="text-sm text-gray-700">Price: {item.price}</p>

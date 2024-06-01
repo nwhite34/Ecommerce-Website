@@ -31,7 +31,7 @@ function MyAccount() {
             {wishlist.map((item, index) => (
               <div key={index} className="bg-white shadow-md rounded-md p-4 relative">
                 <Link to={`/product/${encodeURIComponent(item.title.toLowerCase().replace(/\s+/g, '-'))}`}>
-                  <img src={item.image} alt={item.title} className="w-full h-48 object-cover mb-4" />
+                  <img src={item.mainImage} alt={item.title} className="w-full h-48 object-cover mb-4" />
                 </Link>
                 <button
                   onClick={() => handleWishlistClick(item)}
