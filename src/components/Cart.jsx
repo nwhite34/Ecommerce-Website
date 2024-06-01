@@ -1,6 +1,7 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
 import { FaTimes } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 function Cart() {
   const { cart, isCartOpen, toggleCart, removeFromCart } = useCart();
@@ -17,12 +18,25 @@ function Cart() {
         ) : (
           cart.map((item, index) => (
             <div key={index} className="flex items-center mb-4">
-              <img src={item.mainImage} alt={item.title} className="w-16 h-16 object-cover rounded mr-4" />
+              <Link to={`/product/${encodeURIComponent(item.title.toLowerCase().replace(/\s+/g, '-'))}`}>
+                <img src={item.mainImage} alt={item.title} className="w-16 h-16 object-cover rounded mr-4" />
+              </Link>
               <div>
-                <h3 className="font-bold">{item.title}</h3>
+                <Link to={`/product/${encodeURIComponent(item.title.toLowerCase().replace(/\s+/g, '-'))}`}>
+                  <h3 className="font-bold">{item.title}</h3>
+                </Link>
                 <p className="text-sm">Price: {item.price}</p>
                 <p className="text-sm">Size: {item.size}</p>
-                <button className="text-red-500 text-sm mt-2" onClick={() => removeFromCart(index)}>Remove</button>
+                <button
+                  className="text-red-500 text-sm mt-2"
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent default link behavior
+                    e.stopPropagation(); // Prevent link navigation
+                    removeFromCart(index);
+                  }}
+                >
+                  Remove
+                </button>
               </div>
             </div>
           ))

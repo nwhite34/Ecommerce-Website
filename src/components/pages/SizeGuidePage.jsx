@@ -45,10 +45,34 @@ const SizeGuidePage = () => {
       <div className="container mx-auto mt-20 pt-20 pb-20 min-h-screen flex flex-col justify-center">
         <div className="p-8 text-center">
           <h1 className="text-3xl font-bold mb-4">Size Guide</h1>
-          <p><strong>Small (S):</strong> Bust 32-34 inches, Waist 24-26 inches</p>
-          <p><strong>Medium (M):</strong> Bust 36-38 inches, Waist 28-30 inches</p>
-          <p><strong>Large (L):</strong> Bust 40-42 inches, Waist 32-34 inches</p>
-          {/* Add more detailed size information as needed */}
+          <div className="overflow-x-auto mb-8">
+            <table className="min-w-full border-collapse block md:table">
+              <thead className="block md:table-header-group">
+                <tr className="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative">
+                  <th className="bg-gray-100 p-2 text-gray-800 font-bold md:border md:border-grey-500 text-left block md:table-cell">Size</th>
+                  <th className="bg-gray-100 p-2 text-gray-800 font-bold md:border md:border-grey-500 text-left block md:table-cell">Bust</th>
+                  <th className="bg-gray-100 p-2 text-gray-800 font-bold md:border md:border-grey-500 text-left block md:table-cell">Waist</th>
+                </tr>
+              </thead>
+              <tbody className="block md:table-row-group">
+                <tr className="bg-gray-100 border border-grey-500 md:border-none block md:table-row">
+                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">Small (S)</td>
+                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">32-34 inches</td>
+                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">24-26 inches</td>
+                </tr>
+                <tr className="bg-white border border-grey-500 md:border-none block md:table-row">
+                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">Medium (M)</td>
+                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">36-38 inches</td>
+                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">28-30 inches</td>
+                </tr>
+                <tr className="bg-gray-100 border border-grey-500 md:border-none block md:table-row">
+                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">Large (L)</td>
+                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">40-42 inches</td>
+                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">32-34 inches</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <div className="container mx-auto mt-40 mb-40">

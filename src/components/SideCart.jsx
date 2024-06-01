@@ -45,7 +45,7 @@ function SideCart({ isOpen, onClose }) {
         <FaTimes className="cursor-pointer text-gray-600 absolute top-4 right-4" onClick={onClose} />
         <h2 className="text-xl font-bold mb-4">Your Cart</h2>
         {cart.length === 0 ? (
-          <p>Your cart is empty</p>
+          <p>Your cart is empty...</p>
         ) : (
           <>
             <ul>
@@ -54,7 +54,6 @@ function SideCart({ isOpen, onClose }) {
                   <img src={item.mainImage} alt={item.title} className="w-16 h-16 object-cover rounded mr-4" />
                   <div>
                     <p className="font-bold">{item.title}</p>
-                    <p>Colour: {item.color || 'White'}</p>
                     <p>Size: {item.size}</p>
                     <p>Price: {item.price}</p>
                     <button onClick={() => removeFromCart(index)} className="text-red-500 mt-2">Remove</button>
