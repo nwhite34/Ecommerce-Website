@@ -46,13 +46,15 @@ function HomePageSectionSix() {
   if (selectedProducts.length < 2) return <div>Loading...</div>;
 
   return (
-    <div className="flex flex-col items-center pt-20 pb-20 cursor-pointer">
+    <div className="flex flex-col items-center pt-20 pb-20">
       <div className="flex flex-col md:flex-row w-full max-w-screen-xl">
         {selectedProducts.map((product) => (
           <div key={product.id} className="relative w-full md:w-1/2 p-4">
-            <h2 className={`absolute top-4 left-4 text-3xl font-bold ${getHeading(product.title) === "Trending Now" ? "text-black" : "text-white"}`}>
-              {getHeading(product.title)}
-            </h2>
+            <div className="absolute top-4 left-4 bg-black bg-opacity-50 px-4 py-2 rounded">
+              <h2 className="text-3xl font-bold text-white">
+                {getHeading(product.title)}
+              </h2>
+            </div>
             <Link to={`/product/${encodeURIComponent(product.title.toLowerCase().replace(/\s+/g, '-'))}`}>
               <img src={product.image} alt={product.title} className="w-full h-96 object-cover" />
             </Link>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { signUp, signIn } from '../services/auth'; // Adjust the path accordingly
+import { signUpUser, signInUser } from '../services/auth'; // Adjust the path accordingly
 
 function LoginModal({ isOpen, onClose, isSignUp, switchToSignUp, switchToSignIn }) {
   const [email, setEmail] = useState('');
@@ -12,6 +12,7 @@ function LoginModal({ isOpen, onClose, isSignUp, switchToSignUp, switchToSignIn 
   if (!isOpen) return null;
 
   const getErrorMessage = (code) => {
+    console.log("Error code received:", code); // Add logging to verify error code
     switch (code) {
       case 'auth/email-already-in-use':
         return 'This email address is already in use.';
@@ -27,6 +28,8 @@ function LoginModal({ isOpen, onClose, isSignUp, switchToSignUp, switchToSignIn 
         return 'No account found with this email address.';
       case 'auth/wrong-password':
         return 'Incorrect password. Please try again.';
+      case 'auth/invalid-credential':
+        return 'Invalid credentials. Please try again.';
       default:
         return 'An unexpected error occurred. Please try again.';
     }
@@ -43,12 +46,13 @@ function LoginModal({ isOpen, onClose, isSignUp, switchToSignUp, switchToSignIn 
 
     try {
       if (isSignUp) {
-        await signUp(email, password, name);
+        await signUpUser(email, password, name);
       } else {
-        await signIn(email, password);
+        await signInUser(email, password);
       }
       onClose(); // Close the modal after successful sign-up or sign-in
     } catch (error) {
+      console.error("Error occurred during sign-in/sign-up:", error); // Add logging to see the full error
       const errorMessage = getErrorMessage(error.code);
       setError(errorMessage);
     }

@@ -10,13 +10,21 @@ import InitializeWomenProducts from './components/InitializeWomenProducts';
 import { WishlistProvider } from './context/WishlistContext';
 import { CartProvider } from './context/CartContext';
 import Checkout from './components/pages/Checkout';
-import KidsSection from './components/pages/KidsSection'; // Import the new KidsSection component
+import KidsSection from './components/pages/KidsSection';
+import SizeGuidePage from './components/pages/SizeGuidePage';
+import DeliveryGuidePage from './components/pages/DeliveryGuidePage';
+import PaymentOptionsPage from './components/pages/PaymentOptionsPage';
+import FAQ from './components/pages/FAQ';
+
+
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
     <WishlistProvider>
       <CartProvider>
         <Router>
+          <ScrollToTop />
           <InitializeProducts />
           <InitializeWomenProducts />
           <Routes>
@@ -26,7 +34,12 @@ function App() {
             <Route path="/womens-section" element={<WomenSection />} />
             <Route path="/product/:title" element={<ProductPage />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/kids-section" element={<KidsSection />} /> {/* Add the KidsSection route */}
+            <Route path="/kids-section" element={<KidsSection />} />
+            <Route path="/size-guide" element={<SizeGuidePage />} />
+            <Route path="/delivery-guide" element={<DeliveryGuidePage />} />
+            <Route path="/payment-options" element={<PaymentOptionsPage />} />
+            <Route path="/FAQ" element={<FAQ />} />
+
           </Routes>
         </Router>
       </CartProvider>

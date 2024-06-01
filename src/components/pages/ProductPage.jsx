@@ -175,7 +175,7 @@ const ProductPage = () => {
                     </tr>
                   </tbody>
                 </table>
-                <p className="mt-4">For other delivery methods, <button className="text-blue-500 underline" onClick={() => setShippingHandlingOpen(true)}>click here</button> for shipping and delivery times.</p>
+                <p className="mt-4">For other delivery methods, <Link to="/delivery-guide" className="text-blue-500 underline">click here</Link> for shipping and delivery times.</p>
               </div>
             )}
           </div>

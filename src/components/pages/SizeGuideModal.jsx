@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaTimes } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const SizeGuideModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
@@ -16,6 +17,9 @@ const SizeGuideModal = ({ isOpen, onClose }) => {
         <p><strong>Small (S):</strong> Bust 32-34 inches, Waist 24-26 inches</p>
         <p><strong>Medium (M):</strong> Bust 36-38 inches, Waist 28-30 inches</p>
         <p><strong>Large (L):</strong> Bust 40-42 inches, Waist 32-34 inches</p>
+        <Link to="/size-guide" className="text-blue-500 underline mt-4 inline-block">
+          View Detailed Size Guide
+        </Link>
       </div>
     </div>
   );

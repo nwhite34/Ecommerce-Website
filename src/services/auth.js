@@ -1,5 +1,6 @@
+// src/services/auth.js
 import { auth } from '../config/firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 // Function to capitalize the first letter of the name
 const capitalizeFirstLetter = (string) => {
@@ -7,7 +8,7 @@ const capitalizeFirstLetter = (string) => {
 };
 
 // Sign up function
-export const signUp = async (email, password, name) => {
+export const signUpUser = async (email, password, name) => {
   try {
     const capitalizedDisplayName = capitalizeFirstLetter(name);
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -22,7 +23,7 @@ export const signUp = async (email, password, name) => {
 };
 
 // Sign in function
-export const signIn = async (email, password) => {
+export const signInUser = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     console.log('User signed in:', userCredential.user);
