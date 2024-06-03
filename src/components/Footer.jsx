@@ -33,7 +33,7 @@ const Footer1 = () => {
                     </div>
                 </div>
                 <div className="flex flex-col items-center mt-16">
-                    <p className="text-base leading-4 mt-2 text-black">Copyright 2024 – Nick's Collection, Elevate Your Style!</p>
+                    <p className="text-base leading-4 mt-2 text-black"></p>
                 </div>
             </div>
         </div>
