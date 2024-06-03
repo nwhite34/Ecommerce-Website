@@ -21,6 +21,7 @@ function NavBar() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showCartDropdown, setShowCartDropdown] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const { cart, toggleCart, isCartOpen } = useCart();
   const navigate = useNavigate();
@@ -39,6 +40,15 @@ function NavBar() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollTop]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -121,6 +131,13 @@ function NavBar() {
     }
   }, [cart]);
 
+  const getSearchBarWidth = () => {
+    if (windowWidth <= 738 && windowWidth > 640) {
+      return 'w-2/3 mx-auto'; // Custom width for 738px to 640px and centered
+    }
+    return 'w-full'; // Default width
+  };
+
   return (
     <>
       <nav
@@ -141,7 +158,7 @@ function NavBar() {
           <div className="flex items-center justify-end w-full">
             <div className="hidden sm:flex relative mx-auto w-full max-w-md">
               <label htmlFor="search" className="sr-only">Search</label>
-              <div className="relative w-full">
+              <div className={`relative ${getSearchBarWidth()}`}>
                 <input
                   id="search"
                   type="text"
@@ -162,7 +179,7 @@ function NavBar() {
                 />
               </div>
               {searchResults.length > 0 && (
-                <div className="absolute top-full mt-2 w-full bg-white shadow-lg rounded-md z-20">
+                <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-white shadow-lg rounded-md z-20" style={{ width: 'inherit' }}>
                   <ul>
                     {searchResults.map((result) => (
                       <li
@@ -232,7 +249,7 @@ function NavBar() {
               )}
             </div>
             {searchResults.length > 0 && (
-              <div className="absolute top-full mt-2 w-full max-w-xs mx-auto bg-white shadow-lg rounded-md z-20">
+              <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-white shadow-lg rounded-md z-20" style={{ width: 'inherit' }}>
                 <ul>
                   {searchResults.map((result) => (
                     <li
