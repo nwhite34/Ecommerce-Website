@@ -1,4 +1,4 @@
-E-commerce Website Project
+<h1> E-commerce Website Project </h1>
 This project is an e-commerce web application built with React, Firebase, and Tailwind CSS. It offers a comprehensive learning experience, showcasing skills in web development, authentication, database management, and deployment. Below is an overview of the technologies used, features implemented, and the lessons learned throughout this project.
 
 Table of Contents
