@@ -1,42 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-// Spinner Component
-const Spinner = () => (
-  <div className="flex items-center justify-center h-screen">
-    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-  </div>
-);
 
 function HomePageSectionThree() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const images = [
-      'https://source.unsplash.com/featured/?woman',
-      'https://source.unsplash.com/featured/?man',
-      'https://source.unsplash.com/featured/?kids',
-    ];
-
-    const loadImages = () => {
-      let loadedCount = 0;
-      images.forEach((src) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = () => {
-          loadedCount += 1;
-          if (loadedCount === images.length) {
-            setLoading(false);
-          }
-        };
-      });
-    };
-
-    loadImages();
-  }, []);
-
-  if (loading) return <Spinner />;
 
   return (
     <div className="flex flex-col sm:flex-row justify-between items-stretch min-h-[70vh] m-0">
