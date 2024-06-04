@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { FaSearch, FaTimes, FaUserCircle, FaShoppingCart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import NicksLogo from '../images/collection.png';
@@ -23,32 +23,42 @@ function NavBar() {
   const [searchResults, setSearchResults] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  const searchBarRef = useRef(null);
+  const dropdownRef = useRef(null);
+
   const { cart, toggleCart, isCartOpen } = useCart();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollTop = window.scrollY;
-      if (currentScrollTop > lastScrollTop && currentScrollTop > 50) {
-        setIsVisible(false);
-      } else if (currentScrollTop < lastScrollTop) {
-        setIsVisible(true);
-      }
-      setLastScrollTop(currentScrollTop);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+  const handleScroll = useCallback(() => {
+    const currentScrollTop = window.scrollY;
+    if (currentScrollTop > lastScrollTop && currentScrollTop > 50) {
+      setIsVisible(false);
+    } else if (currentScrollTop < lastScrollTop) {
+      setIsVisible(true);
+    }
+    setLastScrollTop(currentScrollTop);
   }, [lastScrollTop]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
+  const updateDropdownWidthAndPosition = useCallback(() => {
+    if (searchBarRef.current && dropdownRef.current && windowWidth <= 640) {
+      const searchBarWidth = searchBarRef.current.offsetWidth;
+      dropdownRef.current.style.width = `${searchBarWidth}px`;
+    }
+  }, [windowWidth]);
 
+  const handleResize = useCallback(() => {
+    setWindowWidth(window.innerWidth);
+    updateDropdownWidthAndPosition();
+  }, [updateDropdownWidthAndPosition]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [handleScroll, handleResize]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -61,6 +71,10 @@ function NavBar() {
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    updateDropdownWidthAndPosition();
+  }, [searchValue, showSearchBar, searchResults, windowWidth, updateDropdownWidthAndPosition]);
 
   const handleSearchChange = async (e) => {
     const value = e.target.value;
@@ -138,6 +152,13 @@ function NavBar() {
     return 'w-full'; // Default width
   };
 
+  const getDropdownWidth = () => {
+    if (windowWidth <= 640) {
+      return 'w-full'; // Full width for smaller screens
+    }
+    return getSearchBarWidth(); // Match the search bar width for larger screens
+  };
+
   return (
     <>
       <nav
@@ -179,12 +200,12 @@ function NavBar() {
                 />
               </div>
               {searchResults.length > 0 && (
-                <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-white shadow-lg rounded-md z-20" style={{ width: 'inherit' }}>
+                <div className={`absolute left-0 right-0 mx-auto top-full mt-2 bg-white shadow-lg rounded-md z-20 ${getDropdownWidth()}`}>
                   <ul>
                     {searchResults.map((result) => (
                       <li
                         key={result.id}
-                        className="p-4 border-b last:border-b-0 flex items-center cursor-pointer"
+                        className="p-4 border-b last:border-b-0 flex items-center cursor-pointer hover:bg-gray-200"
                         onClick={() => handleResultClick(result.category, result.title)}
                       >
                         <img src={result.mainImage} alt={result.title} className="w-10 h-10 inline-block mr-4" />
@@ -232,7 +253,7 @@ function NavBar() {
         {showSearchBar && (
           <div className="relative w-full px-8 py-4 sm:hidden">
             <label htmlFor="mobile-search" className="sr-only">Search</label>
-            <div className="relative w-full">
+            <div className="relative w-full max-w-md mx-auto" ref={searchBarRef}>
               <input
                 id="mobile-search"
                 type="text"
@@ -249,12 +270,12 @@ function NavBar() {
               )}
             </div>
             {searchResults.length > 0 && (
-              <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-white shadow-lg rounded-md z-20" style={{ width: 'inherit' }}>
+              <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white shadow-lg rounded-md z-20 w-full max-w-md" ref={dropdownRef}>
                 <ul>
                   {searchResults.map((result) => (
                     <li
                       key={result.id}
-                      className="p-4 border-b last:border-b-0 flex items-center cursor-pointer"
+                      className="p-4 border-b last:border-b-0 flex items-center cursor-pointer hover:bg-gray-200"
                       onClick={() => handleResultClick(result.category, result.title)}
                     >
                       <img src={result.mainImage} alt={result.title} className="w-10 h-10 inline-block mr-4" />

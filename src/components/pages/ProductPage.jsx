@@ -11,6 +11,12 @@ import PromoBar from '../PromoBar';
 import SizeGuideModal from './SizeGuideModal';
 import ShippingHandlingModal from './ShippingHandlingModal';
 
+const Spinner = () => (
+  <div className="flex items-center justify-center h-screen">
+    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+);
+
 const ProductPage = () => {
   const { title } = useParams();
   const productTitle = title.replace(/-/g, ' ');
@@ -81,7 +87,7 @@ const ProductPage = () => {
   const visibleProducts = otherProducts.slice(currentIndex, currentIndex + 7).concat(otherProducts.slice(0, Math.max(0, (currentIndex + 7) - otherProducts.length)));
 
   if (error) return <div>{error}</div>;
-  if (!product) return <div>Loading...</div>;
+  if (!product) return <Spinner />;
 
   return (
     <>

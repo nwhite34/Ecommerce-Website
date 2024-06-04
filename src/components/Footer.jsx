@@ -13,9 +13,9 @@ const Footer1 = () => {
     return (
         <div className="bg-white text-black py-16">
             <div className="container mx-auto px-4">
-                <div className="flex flex-col lg:flex-row justify-center items-center gap-8 lg:gap-12">
+                <div className="flex flex-col-reverse lg:flex-row justify-center items-center gap-8 lg:gap-12">
                     <div className="flex-shrink-0 mb-8 lg:mb-0 lg:w-1/2 flex justify-center">
-                        <div className="w-32 h-32">
+                        <div className="w-32 h-32 mt-20 lg:mt-0">
                             <img 
                                 src={salebanner} 
                                 alt="Sale Banner" 
