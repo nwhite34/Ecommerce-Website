@@ -3,6 +3,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { useSwipeable } from 'react-swipeable';
 
 const HomePageSectionTwo = () => {
   const [products, setProducts] = useState([]);
@@ -29,10 +30,17 @@ const HomePageSectionTwo = () => {
 
   const visibleProducts = products.slice(currentIndex, currentIndex + 7).concat(products.slice(0, Math.max(0, (currentIndex + 7) - products.length)));
 
+  const handlers = useSwipeable({
+    onSwipedLeft: handleNext,
+    onSwipedRight: handlePrev,
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true
+  });
+
   return (
     <div className="bg-white py-8 px-4 pt-20 pb-20">
       <h2 className="text-2xl font-bold text-left mb-4">SEE WHAT'S TRENDING</h2>
-      <div className="flex items-center justify-center gap-4">
+      <div {...handlers} className="flex items-center justify-center gap-4">
         <button onClick={handlePrev} className="text-2xl"><FaChevronLeft /></button>
         <div className="flex gap-4 overflow-hidden justify-center w-full">
           {visibleProducts.map((product, index) => (

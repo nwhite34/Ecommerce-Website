@@ -7,6 +7,12 @@ import { useCart } from '../../context/CartContext';
 import { db } from '../../config/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
+const Spinner = () => (
+  <div className="flex items-center justify-center h-screen">
+    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+);
+
 function WomenSection() {
   const [items, setItems] = useState([]);
   const { addToCart } = useCart();
@@ -40,7 +46,7 @@ function WomenSection() {
     addToCart({ ...item, size });
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Spinner />;
   if (error) return <div>{error}</div>;
 
   return (
