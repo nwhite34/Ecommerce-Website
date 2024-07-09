@@ -26,7 +26,7 @@ function BasePage() {
         {/* <HomePageSectionThree /> */}
         <HomePageSectionSix />
         <HomePageSectionSeven />
-        <div className='bg-gradient-to-b from-indigo-500'>
+        <div className='bg-gradient-to-t bg-indigo-500'>
         <HomePageSectionFive />
         <HomePageSectionFour />
         </div>
