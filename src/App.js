@@ -13,6 +13,7 @@ import SizeGuidePage from './components/pages/SizeGuidePage';
 import DeliveryGuidePage from './components/pages/DeliveryGuidePage';
 import PaymentOptionsPage from './components/pages/PaymentOptionsPage';
 import FAQ from './components/pages/FAQ';
+import SearchPage from './components/pages/SearchPage';
 
 
 import ScrollToTop from './components/ScrollToTop';
@@ -36,6 +37,7 @@ function App() {
             <Route path="/delivery-guide" element={<DeliveryGuidePage />} />
             <Route path="/payment-options" element={<PaymentOptionsPage />} />
             <Route path="/FAQ" element={<FAQ />} />
+            <Route path="/search/:query" element={<SearchPage />} />
 
           </Routes>
         </Router>

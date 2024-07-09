@@ -8,7 +8,7 @@ import SideCart from './SideCart';
 import { useCart } from '../context/CartContext';
 import { auth } from '../config/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import searchProducts from '../services/searchProducts';
+import searchProducts from '../services/searchProducts'; // Corrected path
 
 function NavBar() {
   const [isVisible, setIsVisible] = useState(true);
@@ -103,6 +103,13 @@ function NavBar() {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && searchValue) {
+      navigate(`/search/${encodeURIComponent(searchValue)}`);
+      clearSearch();
+    }
+  };
+
   const toggleLoginModal = () => setShowLoginModal(!showLoginModal);
   const switchToSignUp = () => setIsSignUp(true);
   const switchToSignIn = () => setIsSignUp(false);
@@ -185,6 +192,7 @@ function NavBar() {
                   type="text"
                   value={searchValue}
                   onChange={handleSearchChange}
+                  onKeyDown={handleKeyDown}
                   placeholder="Search..."
                   className="px-6 py-3 w-full text-gray-700 bg-gray-100 border rounded-full focus:outline-none focus:ring-0 focus:border-transparent"
                 />
@@ -259,6 +267,7 @@ function NavBar() {
                 type="text"
                 value={searchValue}
                 onChange={handleSearchChange}
+                onKeyDown={handleKeyDown}
                 placeholder="Search..."
                 className="px-6 py-3 w-full text-gray-700 bg-gray-100 focus:outline-none focus:ring-0 focus:border-transparent rounded-full"
               />
