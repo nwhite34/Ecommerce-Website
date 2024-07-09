@@ -6,6 +6,9 @@ import InformationSection from './Step1Information';
 import FulfillmentSection from './Step2Fulfillment';
 import ShippingSection from './Step3Shipping';
 import Step4Payment from './Step4Payment';
+import NavBar from '../Navbar';
+import PromoBar from '../PromoBar';
+import Footer from '../Footer';
 
 const Checkout = () => {
   const { cart, clearCart } = useCart();
@@ -26,14 +29,19 @@ const Checkout = () => {
   };
 
   return (
-    <div className="checkout-container">
-      <StepIndicator step={step} />
-      {step === 1 && <InformationSection nextStep={nextStep} />}
-      {step === 2 && <FulfillmentSection nextStep={nextStep} prevStep={prevStep} />}
-      {step === 3 && <ShippingSection nextStep={nextStep} prevStep={prevStep} />}
-      {step === 4 && <Step4Payment prevStep={prevStep} handleOrderProcess={handleOrderProcess} />}
-      {step === 5 && <div className="text-2xl font-bold text-center">Order Confirmed!</div>}
-    </div>
+    <>
+      <NavBar />
+      <PromoBar />
+      <div className="checkout-container h-screen">
+        <StepIndicator step={step} />
+        {step === 1 && <InformationSection nextStep={nextStep} />}
+        {step === 2 && <FulfillmentSection nextStep={nextStep} prevStep={prevStep} />}
+        {step === 3 && <ShippingSection nextStep={nextStep} prevStep={prevStep} />}
+        {step === 4 && <Step4Payment prevStep={prevStep} handleOrderProcess={handleOrderProcess} />}
+        {step === 5 && <div className="text-2xl font-bold text-center mx-auto mt-32">Order Confirmed! Check your account to see the status of your order.</div>}
+      </div>
+      <Footer />
+    </>
   );
 };
 

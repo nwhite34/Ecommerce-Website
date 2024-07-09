@@ -206,7 +206,7 @@ const ProductPage = () => {
         </div>
       </div>
       <div className="container mx-auto mt-40 mb-40">
-        <h2 className="text-2xl font-bold text-left mb-4">OTHER POPULAR PRODUCTS</h2>
+        <h2 className="text-2xl font-bold text-left mb-4 ">OTHER POPULAR PRODUCTS</h2>
         <div className="bg-white py-8 px-4">
           <div className="flex items-center justify-center gap-4">
             <button onClick={handlePrev} className="text-2xl"><FaChevronLeft /></button>

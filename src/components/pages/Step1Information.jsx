@@ -2,20 +2,33 @@ import React from 'react';
 
 const InformationSection = ({ nextStep }) => {
   return (
-    <div className="p-6 bg-white shadow-md rounded mb-6">
-      <h2 className="text-2xl font-bold mb-4">Checkout Faster</h2>
-      <form>
-        <div className="mb-4">
-          <label className="block text-gray-700">Email Address</label>
-          <input type="email" className="w-full p-2 border rounded" placeholder="nick-whiteley@hotmail.com" />
+    <div className="p-6 bg-white shadow-md rounded mb-6 mx-4 sm:mx-auto sm:max-w-md mt-6 md:mt-12">
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">Checkout Faster</h2>
+      <form className="space-y-4">
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            placeholder="Enter your email"
+          />
         </div>
-        <div className="mb-4 flex items-center">
-          <input type="checkbox" className="mr-2" />
-          <label className="text-gray-700">
-            Join City Beach Rewards to receive the latest news & offers and get a discount on your first order*
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="joinRewards"
+            className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300 rounded"
+          />
+          <label htmlFor="joinRewards" className="ml-2 block text-sm text-gray-700">
+            Join Nicks Collection Rewards to receive news, offers, and discounts
           </label>
         </div>
-        <button type="button" className="w-full bg-blue-500 text-black py-2 mt-2  border-2 border-black  px-6  rounded-full mr-2 font-semibold bg-transparent hover:bg-black hover:text-white" onClick={nextStep}>
+        <button
+          type="button"
+          className="w-full bg-blue-500 text-white py-2 mt-4 rounded-full font-semibold hover:bg-blue-600 focus:outline-none focus:ring focus:bg-blue-600"
+          onClick={nextStep}
+        >
           Continue As Guest
         </button>
       </form>
