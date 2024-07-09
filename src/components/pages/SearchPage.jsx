@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import NavBar from '../Navbar';
 import Footer from '../Footer';
 import searchProducts from '../../services/searchProducts';
+import PromoBar from '../PromoBar';
 
 const Spinner = () => (
   <div className="flex items-center justify-center h-screen">
@@ -14,12 +15,12 @@ const SearchPage = () => {
   const { query } = useParams();
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);  // Add error state
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchSearchResults = async () => {
       setLoading(true);
-      setError(null);  // Reset error state before fetching
+      setError(null);
       try {
         const results = await searchProducts(query);
         setSearchResults(results);
@@ -37,8 +38,9 @@ const SearchPage = () => {
 
   return (
     <>
+      <PromoBar />
       <NavBar />
-      <div className="container mx-auto mt-32 pt-20 pb-20 min-h-screen">
+      <div className="container mx-auto mt-40 pt-20 pb-20 min-h-screen">
         <h1 className="text-3xl font-bold mb-4 text-center">Search Results for "{query}"</h1>
         {searchResults.length > 0 ? (
           <ul className="space-y-4">

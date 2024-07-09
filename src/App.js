@@ -24,7 +24,6 @@ function App() {
       <CartProvider>
         <Router>
           <ScrollToTop />
-          
           <Routes>
             <Route path="/" element={<BasePage />} />
             <Route path="/my-account" element={<MyAccount />} />

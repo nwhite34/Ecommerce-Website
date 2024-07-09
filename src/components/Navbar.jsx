@@ -8,7 +8,7 @@ import SideCart from './SideCart';
 import { useCart } from '../context/CartContext';
 import { auth } from '../config/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import searchProducts from '../services/searchProducts'; // Corrected path
+import searchProducts from '../services/searchProducts';
 
 function NavBar() {
   const [isVisible, setIsVisible] = useState(true);
@@ -94,10 +94,10 @@ function NavBar() {
     setShowSearchBar(false);
   };
 
-  const performSearch = async () => {
-    if (showSearchBar && searchValue) {
-      const results = await searchProducts(searchValue);
-      setSearchResults(results);
+  const performSearch = () => {
+    if (searchValue) {
+      navigate(`/search/${encodeURIComponent(searchValue)}`);
+      clearSearch();
     } else {
       setShowSearchBar(!showSearchBar);
     }
@@ -105,8 +105,7 @@ function NavBar() {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && searchValue) {
-      navigate(`/search/${encodeURIComponent(searchValue)}`);
-      clearSearch();
+      performSearch();
     }
   };
 
