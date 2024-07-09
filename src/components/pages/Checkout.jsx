@@ -1,81 +1,39 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Step1Information from './Step1Information';
-import Step2Fulfillment from './Step2Fulfillment';
-import Step3Shipping from './Step3Shipping';
-import Step4Payment from './Step4Payment';
-import StepIndicator from './StepIndicator';
-import NavBar from '../Navbar';
-import PromoBar from '../PromoBar';
-import Footer from '../Footer';
-import CartSummary from './CartSummary';
 import { useCart } from '../../context/CartContext';
+import { useOrder } from '../../context/OrderContext';
+import StepIndicator from './StepIndicator';
+import InformationSection from './Step1Information';
+import FulfillmentSection from './Step2Fulfillment';
+import ShippingSection from './Step3Shipping';
+import Step4Payment from './Step4Payment';
 
 const Checkout = () => {
-  const { clearCart } = useCart();
+  const { cart, clearCart } = useCart();
+  const { createOrder } = useOrder();
   const [step, setStep] = useState(1);
-  const [orderProcessed, setOrderProcessed] = useState(false);
-  const navigate = useNavigate();
 
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
 
-  const handleOrderProcess = () => {
-    setOrderProcessed(true);
+  const handleOrderProcess = async () => {
+    const orderData = {
+      items: cart,
+      total: cart.reduce((total, item) => total + parseFloat(item.price.replace(/[^0-9.-]+/g, '')), 0),
+    };
+    await createOrder(orderData);
     clearCart();
-  };
-
-  const handleContinueShopping = () => {
-    navigate('/');
-  };
-
-  const renderStep = () => {
-    switch (step) {
-      case 1:
-        return <Step1Information nextStep={nextStep} />;
-      case 2:
-        return <Step2Fulfillment nextStep={nextStep} prevStep={prevStep} />;
-      case 3:
-        return <Step3Shipping nextStep={nextStep} prevStep={prevStep} />;
-      case 4:
-        return <Step4Payment prevStep={prevStep} handleOrderProcess={handleOrderProcess} />;
-      default:
-        return <Step1Information nextStep={nextStep} />;
-    }
+    nextStep();
   };
 
   return (
-    <>
-      <div className="fixed top-0 w-full z-50">
-        <PromoBar />
-      </div>
-      <NavBar />
-      <div className="container mx-auto pt-40 pb-20 min-h-screen flex flex-col justify-center items-center">
-        <StepIndicator step={step} className="mb-8" />
-        <h1 className="text-4xl font-bold mb-8 text-center">Checkout</h1>
-        {orderProcessed ? (
-          <div className="text-center text-2xl font-bold text-green-500 flex flex-col">
-            Your order is being processed... Check your emails for order updates!
-            <button
-              onClick={handleContinueShopping}
-              className="px-4 py-2 rounded-full  mt-32 border-2 w-1/2 mx-auto border-black text-black font-semibold bg-transparent hover:bg-black hover:text-white"
-            >
-              Continue Shopping...
-            </button>
-          </div>
-        ) : (
-          <div className="flex flex-col md:flex-row justify-between w-full max-w-6xl px-4">
-            <div className="w-full max-w-3xl mb-8 md:mb-0">
-              {renderStep()}
-            </div>
-            <div className="md:ml-8 w-full max-w-3xl">
-              <CartSummary />
-            </div>
-          </div>
-        )}
-      </div>
-      <Footer />
-    </>
+    <div className="checkout-container">
+      <StepIndicator step={step} />
+      {step === 1 && <InformationSection nextStep={nextStep} />}
+      {step === 2 && <FulfillmentSection nextStep={nextStep} prevStep={prevStep} />}
+      {step === 3 && <ShippingSection nextStep={nextStep} prevStep={prevStep} />}
+      {step === 4 && <Step4Payment prevStep={prevStep} handleOrderProcess={handleOrderProcess} />}
+      {step === 5 && <div className="text-2xl font-bold text-center">Order Confirmed!</div>}
+    </div>
   );
 };
 

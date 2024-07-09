@@ -39,8 +39,7 @@ function CartDropdown({ toggleSideCart }) {
         </ul>
       )}
       <button
-        className="w-full bg-blue-500 text-black py-2 mt-2  border-2 border-black  px-6  rounded-full mr-2 font-semibold bg-transparent hover:bg-black hover:text-white"
-
+        className="w-full bg-blue-500 text-white py-2 mt-2 border-2 px-6 rounded-md font-semibold hover:bg-blue-700 hover:border-blue-700"
         onClick={toggleSideCart}
       >
         View Your Bag

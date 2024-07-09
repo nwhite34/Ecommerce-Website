@@ -96,10 +96,12 @@ const ProductPage = () => {
       </div>
       <Header />
       <div className="container mx-auto mt-32 pt-20 pb-20">
-        <div className="bg-white  p-6 relative flex flex-col lg:flex-row">
-          <div className="lg:w-1/2 relative mb-4 lg:mb-0 ">
-            <img src={product.images[mainImageIndex]} alt={product.title} className="w-full h-full object-contain rounded-lg shadow-md rounded-md" />
-            <div className="flex justify-center space-x-2 mt-4">
+        <div className="bg-white p-6 relative flex flex-col lg:flex-row">
+          <div className="lg:w-1/2 relative mb-4 lg:mb-0 flex flex-col lg:flex-row">
+            <div className="w-full lg:w-3/4">
+              <img src={product.images[mainImageIndex]} alt={product.title} className="w-full h-full object-contain rounded-lg shadow-md" />
+            </div>
+            <div className="flex lg:flex-col items-center justify-center space-x-2 lg:space-x-0 lg:space-y-2 mt-4 lg:mt-0 lg:ml-4">
               {product.images.map((image, index) => (
                 <img
                   key={index}
@@ -122,8 +124,8 @@ const ProductPage = () => {
                 {product.sizes.map(size => (
                   <button
                     key={size}
-
-                    className="px-4 py-2 rounded mr-2 mb-2 border-2 border-black text-black  font-semibold bg-transparent hover:bg-black hover:text-white" onClick={() => handleAddToCart(size)}
+                    className="px-4 py-2 rounded mr-2 mb-2 border-2 border-black text-black font-semibold bg-transparent hover:bg-black hover:text-white"
+                    onClick={() => handleAddToCart(size)}
                   >
                     {size}
                   </button>
