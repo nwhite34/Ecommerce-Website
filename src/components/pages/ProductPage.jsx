@@ -96,108 +96,110 @@ const ProductPage = () => {
       </div>
       <Header />
       <div className="container mx-auto mt-32 pt-20 pb-20">
-        <div className="bg-white shadow-md rounded-md p-6 relative">
-          <div className="relative w-full h-96 mb-4">
-            <img src={product.images[mainImageIndex]} alt={product.title} className="w-full h-full object-contain rounded-lg" />
-          </div>
-          <div className="flex justify-center space-x-2 mb-4">
-            {product.images.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt={`${product.title} thumbnail ${index + 1}`}
-                className={`w-16 h-16 object-cover cursor-pointer ${index === mainImageIndex ? 'border-2 border-blue-500' : ''}`}
-                onClick={() => setMainImageIndex(index)}
-              />
-            ))}
-          </div>
-          <button onClick={handleWishlistClick} className="absolute top-4 right-4">
-            {isWishlisted ? <FaHeart className="text-red-500 text-2xl" /> : <FaRegHeart className="text-gray-500 text-2xl" />}
-          </button>
-          <h3 className="text-2xl font-bold mb-2">{product.title}</h3>
-          <p className="text-xl text-gray-700 mb-4">{product.price}</p>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              {product.sizes.map(size => (
-                <button
-                  key={size}
-                  className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-                  onClick={() => handleAddToCart(size)}
-                >
-                  {size}
-                </button>
+        <div className="bg-white  p-6 relative flex flex-col lg:flex-row">
+          <div className="lg:w-1/2 relative mb-4 lg:mb-0 ">
+            <img src={product.images[mainImageIndex]} alt={product.title} className="w-full h-full object-contain rounded-lg shadow-md rounded-md" />
+            <div className="flex justify-center space-x-2 mt-4">
+              {product.images.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`${product.title} thumbnail ${index + 1}`}
+                  className={`w-16 h-16 object-cover cursor-pointer ${index === mainImageIndex ? 'border-2 border-blue-500' : 'border-none'}`}
+                  onClick={() => setMainImageIndex(index)}
+                />
               ))}
             </div>
           </div>
-          <div className="border-t mt-4 pt-4">
-            <div 
-              className="flex justify-between items-center cursor-pointer"
-              onClick={() => setDetailsOpen(!detailsOpen)}
-            >
-              <h4 className="text-xl font-bold mb-4">Details</h4>
-              {detailsOpen ? <FaChevronUp /> : <FaChevronDown />}
-            </div>
-            {detailsOpen && (
-              <div>
-                <p><strong>Brand:</strong> {product.brand}</p>
-                <p><strong>Composition:</strong> {product.material}</p>
-                <p><strong>Care Instructions:</strong> {product.careInstructions}</p>
-                <p><strong>Fit:</strong> {product.fit || 'Regular'}</p>
-                <p><strong>Length:</strong> {product.length || 'Standard'}</p>
-                <p><strong>Style:</strong> {product.style || 'Casual'}</p>
-                <p><strong>Elasticity:</strong> {product.elasticity || 'Non-stretch'}</p>
+          <div className="lg:w-1/2 lg:pl-6 mt-8 lg:mt-0">
+            <button onClick={handleWishlistClick} className="absolute top-4 right-4">
+              {isWishlisted ? <FaHeart className="text-red-500 text-2xl" /> : <FaRegHeart className="text-gray-500 text-2xl" />}
+            </button>
+            <h3 className="text-2xl font-bold mb-2">{product.title}</h3>
+            <p className="text-xl text-gray-700 mb-4">{product.price}</p>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                {product.sizes.map(size => (
+                  <button
+                    key={size}
+
+                    className="px-4 py-2 rounded mr-2 mb-2 border-2 border-black text-black  font-semibold bg-transparent hover:bg-black hover:text-white" onClick={() => handleAddToCart(size)}
+                  >
+                    {size}
+                  </button>
+                ))}
               </div>
-            )}
-          </div>
-          <div className="border-t mt-4 pt-4">
-            <div 
-              className="flex justify-between items-center cursor-pointer"
-              onClick={() => setSizeFitOpen(!sizeFitOpen)}
-            >
-              <h4 className="text-xl font-bold mb-4">Size & Fit</h4>
-              {sizeFitOpen ? <FaChevronUp /> : <FaChevronDown />}
             </div>
-            {sizeFitOpen && (
-              <div>
-                <p>Please refer to our size guide to see what size is right for you! Keep in mind, sizes between brands are likely to vary, so please use the measurements as a guide only.</p>
-                <button className="text-blue-500 underline" onClick={() => setSizeGuideOpen(true)}>View Size Guide</button>
+            <div className="border-t mt-4 pt-4">
+              <div 
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => setDetailsOpen(!detailsOpen)}
+              >
+                <h4 className="text-xl font-bold mb-4">Details</h4>
+                {detailsOpen ? <FaChevronUp /> : <FaChevronDown />}
               </div>
-            )}
-          </div>
-          <div className="border-t mt-4 pt-4">
-            <div 
-              className="flex justify-between items-center cursor-pointer"
-              onClick={() => setDeliveryOpen(!deliveryOpen)}
-            >
-              <h4 className="text-xl font-bold mb-4">Delivery & Returns</h4>
-              {deliveryOpen ? <FaChevronUp /> : <FaChevronDown />}
+              {detailsOpen && (
+                <div>
+                  <p><strong>Brand:</strong> {product.brand}</p>
+                  <p><strong>Composition:</strong> {product.material}</p>
+                  <p><strong>Care Instructions:</strong> {product.careInstructions}</p>
+                  <p><strong>Fit:</strong> {product.fit || 'Regular'}</p>
+                  <p><strong>Length:</strong> {product.length || 'Standard'}</p>
+                  <p><strong>Style:</strong> {product.style || 'Casual'}</p>
+                  <p><strong>Elasticity:</strong> {product.elasticity || 'Non-stretch'}</p>
+                </div>
+              )}
             </div>
-            {deliveryOpen && (
-              <div>
-                <table className="w-full text-left">
-                  <thead>
-                    <tr>
-                      <th className="border px-4 py-2">Shipping Methods</th>
-                      <th className="border px-4 py-2">Shipping Times</th>
-                      <th className="border px-4 py-2">Cost</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="border px-4 py-2">Express</td>
-                      <td className="border px-4 py-2">Metro 1-4 business days, Regional/Rural 1-7 business days</td>
-                      <td className="border px-4 py-2">$13.99</td>
-                    </tr>
-                    <tr>
-                      <td className="border px-4 py-2">Standard</td>
-                      <td className="border px-4 py-2">Metro 2-10 business days, Regional/Rural 2-13 business days</td>
-                      <td className="border px-4 py-2">$10.99 or $2 for orders over $100</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <p className="mt-4">For other delivery methods, <Link to="/delivery-guide" className="text-blue-500 underline">click here</Link> for shipping and delivery times.</p>
+            <div className="border-t mt-4 pt-4">
+              <div 
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => setSizeFitOpen(!sizeFitOpen)}
+              >
+                <h4 className="text-xl font-bold mb-4">Size & Fit</h4>
+                {sizeFitOpen ? <FaChevronUp /> : <FaChevronDown />}
               </div>
-            )}
+              {sizeFitOpen && (
+                <div>
+                  <p>Please refer to our size guide to see what size is right for you! Keep in mind, sizes between brands are likely to vary, so please use the measurements as a guide only.</p>
+                  <button className="text-blue-500 underline" onClick={() => setSizeGuideOpen(true)}>View Size Guide</button>
+                </div>
+              )}
+            </div>
+            <div className="border-t mt-4 pt-4">
+              <div 
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => setDeliveryOpen(!deliveryOpen)}
+              >
+                <h4 className="text-xl font-bold mb-4">Delivery & Returns</h4>
+                {deliveryOpen ? <FaChevronUp /> : <FaChevronDown />}
+              </div>
+              {deliveryOpen && (
+                <div>
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr>
+                        <th className="border px-4 py-2">Shipping Methods</th>
+                        <th className="border px-4 py-2">Shipping Times</th>
+                        <th className="border px-4 py-2">Cost</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="border px-4 py-2">Express</td>
+                        <td className="border px-4 py-2">Metro 1-4 business days, Regional/Rural 1-7 business days</td>
+                        <td className="border px-4 py-2">$13.99</td>
+                      </tr>
+                      <tr>
+                        <td className="border px-4 py-2">Standard</td>
+                        <td className="border px-4 py-2">Metro 2-10 business days, Regional/Rural 2-13 business days</td>
+                        <td className="border px-4 py-2">$10.99 or $2 for orders over $100</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p className="mt-4">For other delivery methods, <Link to="/delivery-guide" className="text-blue-500 underline">click here</Link> for shipping and delivery times.</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

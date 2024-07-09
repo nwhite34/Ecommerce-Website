@@ -14,10 +14,10 @@ const ShippingSection = ({ nextStep, prevStep }) => {
           <input type="radio" name="shipping" value="Express" className="mr-2" /> A$13.99 (1-3 business days)
         </div>
         <div className="flex justify-between">
-          <button type="button" className="px-4 py-2 bg-gray-500 text-white rounded" onClick={prevStep}>
+          <button type="button" className="px-4 py-2 text-black  mt-2  border-2 border-black  rounded-full mr-2 font-semibold bg-transparent hover:bg-black hover:text-white" onClick={prevStep}>
             Previous
           </button>
-          <button type="button" className="px-4 py-2 bg-blue-500 text-white rounded" onClick={nextStep}>
+          <button type="button" className="px-4 py-2 text-black  mt-2  border-2 border-black  rounded-full mr-2 font-semibold bg-transparent hover:bg-black hover:text-white" onClick={nextStep}>
             Confirm Shipping
           </button>
         </div>

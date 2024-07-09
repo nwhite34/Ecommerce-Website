@@ -2,7 +2,7 @@ import React from 'react';
 import HomePage from './HomePage';
 import HomePageSectionOne from './HomePageSectionOne';
 import HomePageSectionTwo from './HomePageSectionTwo';
-import HomePageSectionThree from './HomePageSectionThree';
+// import HomePageSectionThree from './HomePageSectionThree';
 import HomePageSectionFour from './HomePageSectionFour';
 import HomePageSectionFive from './HomePageSectionFive';
 import HomePageSectionSix from './HomePageSectionSix';
@@ -23,12 +23,15 @@ function BasePage() {
         <HomePageSectionOne />
         <HomePageSectionSeven />
         <HomePageSectionTwo />
-        <HomePageSectionThree />
+        {/* <HomePageSectionThree /> */}
         <HomePageSectionSix />
         <HomePageSectionSeven />
+        <div className='bg-gradient-to-b from-indigo-500'>
         <HomePageSectionFive />
         <HomePageSectionFour />
+        </div>
         <Footer />
+       
       </div>
     </>
   );

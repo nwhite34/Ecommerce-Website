@@ -29,7 +29,7 @@ const Step4Payment = ({ prevStep, handleOrderProcess }) => {
           <label className="text-gray-700">Use the same address for billing</label>
         </div>
         <div className="flex justify-between">
-          <button type="button" className="px-4 py-2 bg-gray-500 text-white rounded" onClick={prevStep}>
+          <button type="button" className="px-4 py-2 text-black  mt-2  border-2 border-black  rounded-full mr-2 font-semibold bg-transparent hover:bg-black hover:text-white" onClick={prevStep}>
             Previous
           </button>
           <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded">

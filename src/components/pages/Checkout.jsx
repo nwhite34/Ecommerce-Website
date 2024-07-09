@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Step1Information from './Step1Information';
 import Step2Fulfillment from './Step2Fulfillment';
 import Step3Shipping from './Step3Shipping';
@@ -14,6 +15,7 @@ const Checkout = () => {
   const { clearCart } = useCart();
   const [step, setStep] = useState(1);
   const [orderProcessed, setOrderProcessed] = useState(false);
+  const navigate = useNavigate();
 
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
@@ -21,6 +23,10 @@ const Checkout = () => {
   const handleOrderProcess = () => {
     setOrderProcessed(true);
     clearCart();
+  };
+
+  const handleContinueShopping = () => {
+    navigate('/');
   };
 
   const renderStep = () => {
@@ -48,8 +54,14 @@ const Checkout = () => {
         <StepIndicator step={step} className="mb-8" />
         <h1 className="text-4xl font-bold mb-8 text-center">Checkout</h1>
         {orderProcessed ? (
-          <div className="text-center text-2xl font-bold text-green-500">
-            Your order is being processed!
+          <div className="text-center text-2xl font-bold text-green-500 flex flex-col">
+            Your order is being processed... Check your emails for order updates!
+            <button
+              onClick={handleContinueShopping}
+              className="px-4 py-2 rounded-full  mt-32 border-2 w-1/2 mx-auto border-black text-black font-semibold bg-transparent hover:bg-black hover:text-white"
+            >
+              Continue Shopping...
+            </button>
           </div>
         ) : (
           <div className="flex flex-col md:flex-row justify-between w-full max-w-6xl px-4">

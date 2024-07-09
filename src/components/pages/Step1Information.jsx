@@ -15,7 +15,7 @@ const InformationSection = ({ nextStep }) => {
             Join City Beach Rewards to receive the latest news & offers and get a discount on your first order*
           </label>
         </div>
-        <button type="button" className="w-full bg-blue-500 text-white py-2 rounded" onClick={nextStep}>
+        <button type="button" className="w-full bg-blue-500 text-black py-2 mt-2  border-2 border-black  px-6  rounded-full mr-2 font-semibold bg-transparent hover:bg-black hover:text-white" onClick={nextStep}>
           Continue As Guest
         </button>
       </form>

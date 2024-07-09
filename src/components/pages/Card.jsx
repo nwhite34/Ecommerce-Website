@@ -33,7 +33,7 @@ function Card({ mainImage, title, price, sizes, showWishlist = true, onAddToCart
         {sizes.map((size) => (
           <button
             key={size}
-            className="bg-blue-500 text-white px-4 py-2 rounded mr-2 mb-2"
+            className="px-4 py-2 rounded mr-2 mb-2 border-2 border-black text-black  font-semibold bg-transparent hover:bg-black hover:text-white"
             onClick={(e) => {
               e.stopPropagation(); // Prevent the click event from propagating to the parent
               onAddToCart(size);
