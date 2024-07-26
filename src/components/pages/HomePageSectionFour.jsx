@@ -10,7 +10,7 @@ export default function Index() {
   };
 
   return (
-    <div className="mx-auto container py-16 px-6">
+    <div className="mx-auto container py-16 px-6 pb-28">
       <div className="flex flex-col lg:flex-row justify-center items-center xl:space-x-44 lg:space-x-24 space-y-8 lg:space-y-0">
         <div className="md:px-12 lg:px-0 flex flex-col justify-start items-start lg:w-2/5 xl:w-3/12">
           <div>
@@ -27,7 +27,7 @@ export default function Index() {
               <p className="text-base leading-6 text-green-600">Thanks for subscribing! Check your email for confirmation.</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="w-full">
+            <form onSubmit={handleSubmit} className="w-full ">
               <div className="xl:mt-12 mt-6 w-full">
                 <input 
                   className="focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2 pb-1 border border-gray-600 w-full h-12 sm:w-96 md:w-full lg:w-72 px-4 text-base leading-4 text-gray-600 placeholder-gray-500" 
@@ -39,7 +39,7 @@ export default function Index() {
                   required
                 />
               </div>
-              <div className="xl:mt-4 mt-2 w-full">
+              <div className="xl:mt-4 mt-2 w-full ">
                 <button type="submit" className="hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 h-12 w-full sm:w-96 md:w-full lg:w-72 bg-gray-800 text-base font-medium leading-4 text-white">
                   Subscribe
                 </button>
@@ -51,7 +51,6 @@ export default function Index() {
           <img src="https://i.ibb.co/CzGcZF4/pexels-katie-e-3671083-1.png" alt="girl" />
         </div>
       </div>
-      <div className="w-full border-t-2 border-gray-300 mt-32 pt-8 sm:px-6 md:px-8 lg:px-0"></div>
     </div>
   );
 }
